@@ -59,7 +59,7 @@ npm run dev                     # http://localhost:3100
 
 Add `ANTHROPIC_API_KEY` to `.env` to use real Claude analysis.
 
-**Deploy (Vercel + Neon):** connect a Neon database to the Vercel project, set `SESSION_SECRET` and `APP_URL`, then `vercel deploy --prod` — migrations run during the build (`vercel.json`). Seed a deployed instance through its own API with `BASE_URL=https://… npx tsx scripts/seed-remote.ts`.
+**Deploy (Vercel + Neon):** connect a Neon database to the Vercel project, set `SESSION_SECRET` and `APP_URL`, then push to `main` — Vercel deploys automatically and migrations run during the build (`vercel.json`). Pull requests get preview deployments. Seed a deployed instance through its own API with `BASE_URL=https://… npx tsx scripts/seed-remote.ts`.
 
 **Run everything in Docker:** `SESSION_SECRET=... docker compose --profile app up --build` (run `npm run db:deploy` against the DB once).
 
