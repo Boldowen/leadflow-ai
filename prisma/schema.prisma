@@ -21,6 +21,7 @@ model User {
   telegramChatId   String?
   sheetsWebhookUrl String?
   automationRuns   AutomationRun[]
+  aiCalls          AiCall[]
 }
 
 enum LeadStatus {
@@ -83,4 +84,15 @@ model AutomationRun {
   createdAt DateTime  @default(now())
 
   @@index([ownerId, createdAt])
+}
+
+/// One real (non-mock) Claude call — used for per-user and global rate limits.
+model AiCall {
+  id        String   @id @default(cuid())
+  ownerId   String
+  owner     User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@index([ownerId, createdAt])
+  @@index([createdAt])
 }

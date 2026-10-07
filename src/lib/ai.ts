@@ -24,12 +24,17 @@ Be concise and practical. Write the summary and next action in the same language
 
 export class AnalysisError extends Error {}
 
+/** True when calls go to Claude (and cost money); false for the offline analyzer. */
+export function usingRealAi() {
+  return Boolean(process.env.ANTHROPIC_API_KEY) && process.env.AI_MOCK !== "1";
+}
+
 export async function analyzeLead(lead: LeadForAnalysis): Promise<LeadAnalysis> {
   if (!lead.message.trim()) {
     throw new AnalysisError("Add the lead's message before running AI analysis.");
   }
   // No key (local demo, CI) → deterministic offline analyzer so the app and tests still work.
-  if (!process.env.ANTHROPIC_API_KEY || process.env.AI_MOCK === "1") {
+  if (!usingRealAi()) {
     return mockAnalyze(lead);
   }
 
