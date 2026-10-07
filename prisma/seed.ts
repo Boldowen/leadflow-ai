@@ -38,6 +38,7 @@ async function main() {
     update: {},
     create: { name: "Demo User", email: "demo@leadflow.dev", passwordHash: await bcrypt.hash("demo12345", 10) },
   });
+  await db.automationRun.deleteMany({ where: { ownerId: user.id } });
   await db.lead.deleteMany({ where: { ownerId: user.id } });
   for (const lead of leads) {
     await db.lead.create({

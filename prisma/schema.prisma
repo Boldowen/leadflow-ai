@@ -14,6 +14,13 @@ model User {
   passwordHash String
   createdAt    DateTime @default(now())
   leads        Lead[]
+
+  // Automation: public form key + optional integrations
+  formKey          String  @unique @default(cuid())
+  telegramBotToken String?
+  telegramChatId   String?
+  sheetsWebhookUrl String?
+  automationRuns   AutomationRun[]
 }
 
 enum LeadStatus {
@@ -51,6 +58,29 @@ model Lead {
   owner     User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  automationRuns AutomationRun[]
+
+  @@index([ownerId, createdAt])
+}
+
+enum RunStatus {
+  SUCCESS
+  PARTIAL
+  FAILED
+}
+
+/// One execution of the website-form workflow: AI → Sheets → Telegram.
+model AutomationRun {
+  id        String    @id @default(cuid())
+  status    RunStatus
+  /// [{ step, status: "ok" | "skipped" | "failed", detail?, ms }]
+  steps     Json
+  ownerId   String
+  owner     User      @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  leadId    String?
+  lead      Lead?     @relation(fields: [leadId], references: [id], onDelete: SetNull)
+  createdAt DateTime  @default(now())
 
   @@index([ownerId, createdAt])
 }

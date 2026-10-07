@@ -1,16 +1,16 @@
 # QA Report — LeadFlow AI
 
 **Build:** local production build (`next build && next start`) · **Date:** 2026-10-07
-**Scope:** authentication, access control, lead CRUD, AI analysis, REST API, responsive layout
+**Scope:** authentication, access control, lead CRUD, AI analysis, REST API, website-form automation, responsive layout
 **Environment:** Chromium 153 (desktop 1280×720) and Pixel 7 emulation · PostgreSQL 16 · AI in offline mode (`AI_MOCK=1`)
 
 ## Summary
 
 | Result | Count |
 | --- | --- |
-| Automated tests | 26 |
-| Passed | 26 |
-| Bugs found | 3 (all fixed) |
+| Automated tests | 32 |
+| Passed | 32 |
+| Bugs found | 4 (all fixed) |
 
 ## Bugs found
 
@@ -38,7 +38,15 @@
 **Actual:** status/temperature badges filled the whole row on narrow screens.
 **Fix:** `w-fit` on badges.
 
+### BUG-004 — CI typecheck fails on a clean checkout · Severity: Medium · Fixed
+
+**Actual:** `tsc` passed locally but failed in GitHub Actions with `Cannot find name 'PageProps' / 'RouteContext'`.
+**Root cause:** Next.js generates these global route types into `.next/types` during `dev`/`build`; a fresh clone has none. Classic "works on my machine".
+**Fix:** `typecheck` script now runs `next typegen && tsc --noEmit`. Verified on a clean copy of the repo.
+
 ## Notes / recommendations
 
 - Real Claude analysis is not exercised in CI (cost + nondeterminism). Recommend a small nightly job with a real key that checks the response shape only.
-- No rate limiting on `/login` yet — recommend adding before production.
+- No rate limiting on `/login` yet — recommend adding before production (the public form endpoint is rate limited).
+- The form rate limiter is in-memory per instance; use Redis if the app is scaled horizontally.
+- Telegram / Sheets success paths are verified manually (they need real credentials); failure isolation is covered by the run log design.

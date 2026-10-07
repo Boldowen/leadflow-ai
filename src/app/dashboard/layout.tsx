@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { logout } from "@/app/actions/auth";
 import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui";
@@ -9,7 +10,13 @@ export default async function DashboardLayout({ children }: LayoutProps<"/dashbo
     <div className="flex flex-1 flex-col">
       <header className="border-b border-slate-200 bg-white">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
-          <Logo href="/dashboard" />
+          <div className="flex items-center gap-6">
+            <Logo href="/dashboard" />
+            <nav className="flex gap-4 text-sm font-medium text-slate-600">
+              <Link href="/dashboard" className="hover:text-slate-900">Leads</Link>
+              <Link href="/dashboard/automation" className="hover:text-slate-900">Automation</Link>
+            </nav>
+          </div>
           <div className="flex items-center gap-3">
             <span className="hidden text-sm text-slate-600 sm:inline" data-testid="current-user">
               {user.name}

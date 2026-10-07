@@ -45,3 +45,33 @@ export function fieldErrors(error: z.ZodError) {
   }
   return out;
 }
+
+/** Public website form. `website` is a honeypot: humans never see it, bots fill it. */
+export const publicFormSchema = z.object({
+  name: z.string().trim().min(1, "Name is required").max(120),
+  email: z.email("Enter a valid email").trim().toLowerCase(),
+  company: z.string().trim().max(120).optional().default(""),
+  message: z.string().trim().min(10, "Tell us a bit more (at least 10 characters)").max(5000),
+  website: z.string().optional().default(""),
+});
+
+const emptyToNull = (v: unknown) => (typeof v === "string" && v.trim() === "" ? null : v);
+
+export const integrationsSchema = z.object({
+  sheetsWebhookUrl: z.preprocess(
+    emptyToNull,
+    z
+      .url("Enter a valid URL")
+      .trim()
+      .refine((u) => u.startsWith("https://script.google.com/macros/"), "Must be a Google Apps Script web app URL (https://script.google.com/macros/…)")
+      .nullable(),
+  ),
+  telegramBotToken: z.preprocess(
+    emptyToNull,
+    z.string().trim().regex(/^\d{5,}:[\w-]{30,}$/, "Looks like an invalid bot token (format 123456:ABC…)").nullable(),
+  ),
+  telegramChatId: z.preprocess(
+    emptyToNull,
+    z.string().trim().regex(/^-?\d+$|^@\w{4,}$/, "Chat ID is a number (e.g. 123456789) or @channelname").nullable(),
+  ),
+});
