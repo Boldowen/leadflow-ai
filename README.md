@@ -23,6 +23,7 @@ Full-stack Next.js app with a REST API, PostgreSQL, session auth, AI integration
 - **AI analysis** — Claude (`claude-opus-5-5`) returns a validated JSON object `{ summary, temperature, nextAction }` via structured outputs (Zod schema). The lead text is treated as untrusted input. Refusals and API errors are handled with user-friendly messages.
 - **Website form automation** — website form → validation + spam check → lead saved → AI qualification → Google Sheets row → Telegram alert, running in the background with a per-step run log (`SUCCESS` / `PARTIAL` / `FAILED`). Hosted form, HTML embed and JSON webhook. See [docs/AUTOMATION.md](docs/AUTOMATION.md).
 - **Offline mode** — without `ANTHROPIC_API_KEY` (or with `AI_MOCK=1`) a deterministic keyword analyzer is used, so the demo and CI work with no API cost.
+- **Admin page** — `/admin` shows users, lead counts, AI usage and failed automation runs across all accounts, without exposing lead contents or secrets. Admins are granted only from the command line: `npm run admin -- grant you@example.com` (also `revoke`, `list`). The role is checked in the DB on every request; everyone else gets a 404.
 - **REST API** — `GET/POST /api/leads`, `GET/PATCH/DELETE /api/leads/:id`, `POST /api/leads/:id/analyze`, `GET /api/health`, public `POST /api/forms/:formKey`. Validation errors return `422` with per-field details.
 - **Polish** — loading skeletons, error boundary, empty states, accessible forms (labels, `aria-invalid`, `role="alert"`), responsive layout.
 
@@ -71,7 +72,7 @@ npm run test:e2e:ui     # Playwright UI mode
 npx playwright show-report
 ```
 
-**32 end-to-end tests** across desktop Chrome and a Pixel 7 viewport:
+**37 end-to-end tests** across desktop Chrome and a Pixel 7 viewport:
 
 | Area | What is covered |
 | --- | --- |
@@ -81,6 +82,7 @@ npx playwright show-report
 | AI analysis | hot / cold classification, summary + next action rendered, dashboard stats update, empty-message error |
 | REST API | health check, 401 without session, full CRUD + analyze, 422/400 on bad payloads, cross-user 404s, PATCH partial update |
 | Automation | hosted form → AI-qualified lead + run log, public form validation, JSON / HTML-form / honeypot / unknown key, rate limiting (429), integration settings validation (SSRF guard), Telegram test |
+| Admin | redirect when signed out, 404 for regular users, usage + user search, no lead contents shown, instant revoke, admin script guards |
 | Responsive | core flow on mobile, no horizontal overflow |
 
 CI (`.github/workflows/ci.yml`) runs lint → typecheck → migrations → Playwright against a Postgres service container on every push and PR, and uploads the HTML report as an artifact.

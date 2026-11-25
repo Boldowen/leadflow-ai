@@ -47,7 +47,7 @@ export async function deleteLead(ownerId: string, id: string) {
 }
 
 const HOURLY_LIMIT_PER_USER = Number(process.env.AI_HOURLY_LIMIT_PER_USER ?? 20);
-const DAILY_LIMIT_GLOBAL = Number(process.env.AI_DAILY_LIMIT ?? 300);
+export const DAILY_LIMIT_GLOBAL = Number(process.env.AI_DAILY_LIMIT ?? 300);
 
 /** Caps paid Claude calls per user and app-wide; counted in the DB so it holds across serverless instances. */
 async function reserveAiCall(ownerId: string) {
