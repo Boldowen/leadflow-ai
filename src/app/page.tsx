@@ -38,7 +38,7 @@ export default function Home() {
             Know which leads to call <span className="text-indigo-600">first</span>.
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-lg text-pretty text-slate-600">
-            LeadFlow AI reads every inbound message, writes a one-line summary, scores it Hot, Warm or Cold, and tells you the next step — so small teams never miss a deal.
+            Emberza reads every inbound message, writes a one-line summary, scores it Hot, Warm or Cold, and tells you the next step — so small teams never miss a deal.
           </p>
           <div className="mt-10 flex flex-wrap justify-center gap-3">
             <ButtonLink href="/register" className="px-6 py-3 text-base">Start free</ButtonLink>

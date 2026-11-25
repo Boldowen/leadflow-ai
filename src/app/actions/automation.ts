@@ -30,7 +30,7 @@ export async function sendTelegramTestAction(): Promise<TestState> {
   const cfg = await db.user.findUniqueOrThrow({ where: { id: user.id }, select: { telegramBotToken: true, telegramChatId: true } });
   if (!cfg.telegramBotToken || !cfg.telegramChatId) return { error: "Save a bot token and chat ID first." };
   try {
-    await sendTelegram(cfg.telegramBotToken, cfg.telegramChatId, "✅ LeadFlow AI is connected. New website leads will appear here.");
+    await sendTelegram(cfg.telegramBotToken, cfg.telegramChatId, "✅ Emberza is connected. New website leads will appear here.");
     return { ok: true };
   } catch (err) {
     return { error: err instanceof IntegrationError ? err.message : "Could not reach Telegram." };

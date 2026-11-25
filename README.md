@@ -1,8 +1,8 @@
-# LeadFlow AI
+# Emberza
 
 **AI lead qualification for small teams.** Capture inbound leads from your website, let Claude summarize each message, score it **Hot / Warm / Cold**, and suggest the next action — so you always know who to call first.
 
-**Live demo:** https://leadflow-ai-eight-sigma.vercel.app — log in with `demo@leadflow.dev` / `demo12345` (shared demo account, reset from time to time).
+**Live demo:** https://leadflow-ai-eight-sigma.vercel.app — log in with `demo@emberza.dev` / `demo12345` (shared demo account, reset from time to time).
 
 Full-stack Next.js app with a REST API, PostgreSQL, session auth, AI integration, and a Playwright end-to-end suite running in GitHub Actions.
 
@@ -54,7 +54,7 @@ cp .env.example .env            # then set SESSION_SECRET (openssl rand -base64 
 npm install
 npm run db:up                   # Postgres in Docker on :5435
 npm run db:migrate
-npm run db:seed                 # demo@leadflow.dev / demo12345
+npm run db:seed                 # demo@emberza.dev / demo12345
 npm run dev                     # http://localhost:3100
 ```
 

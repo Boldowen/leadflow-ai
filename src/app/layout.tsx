@@ -6,7 +6,7 @@ const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: { default: "LeadFlow AI — AI lead qualification", template: "%s · LeadFlow AI" },
+  title: { default: "Emberza — AI lead qualification", template: "%s · Emberza" },
   description: "Capture leads, let AI summarize and score them Hot / Warm / Cold, and know exactly what to do next.",
 };
 

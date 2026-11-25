@@ -4,7 +4,7 @@ import { chromium } from "@playwright/test";
 
 const base = process.env.BASE_URL;
 if (!base) throw new Error("Set BASE_URL");
-const demo = { name: "Demo User", email: "demo@leadflow.dev", password: "demo12345" };
+const demo = { name: "Demo User", email: "demo@emberza.dev", password: "demo12345" };
 
 const leads = [
   { name: "Sarah Chen", email: "sarah@brightdental.com", company: "Bright Dental", status: "QUALIFIED",
