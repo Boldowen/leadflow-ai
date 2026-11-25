@@ -7,11 +7,18 @@ datasource db {
   provider = "postgresql"
 }
 
+enum Role {
+  USER
+  ADMIN
+}
+
 model User {
   id           String   @id @default(cuid())
   name         String
   email        String   @unique
   passwordHash String
+  /// ADMIN is only ever granted with `npm run admin` — never through the app.
+  role         Role     @default(USER)
   createdAt    DateTime @default(now())
   leads        Lead[]
 

@@ -6,7 +6,7 @@ export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const session = await verifySession(request.cookies.get(SESSION_COOKIE)?.value);
 
-  if (pathname.startsWith("/dashboard") && !session) {
+  if ((pathname.startsWith("/dashboard") || pathname.startsWith("/admin")) && !session) {
     const url = new URL("/login", request.url);
     url.searchParams.set("next", pathname);
     return NextResponse.redirect(url);
@@ -18,5 +18,5 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/login", "/register"],
+  matcher: ["/dashboard/:path*", "/admin/:path*", "/login", "/register"],
 };

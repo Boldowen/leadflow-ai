@@ -1,3 +1,4 @@
+import { execFileSync } from "node:child_process";
 import { test as base, expect, type Page } from "@playwright/test";
 
 export type TestUser = { name: string; email: string; password: string };
@@ -28,6 +29,11 @@ export async function createLeadViaUi(
   await page.getByRole("button", { name: "Create lead" }).click();
   await expect(page).toHaveURL(/\/dashboard\/leads\/[a-z0-9]+$/);
   await expect(page.getByRole("heading", { level: 1, name: lead.name })).toBeVisible();
+}
+
+/** Runs the real admin script against the local DB. Returns its output; throws on a non-zero exit. */
+export function adminScript(...args: string[]) {
+  return execFileSync("npx", ["tsx", "scripts/set-admin.ts", ...args], { encoding: "utf8", stdio: "pipe" });
 }
 
 /** `user` = a freshly registered account; the page is already signed in as that user. */

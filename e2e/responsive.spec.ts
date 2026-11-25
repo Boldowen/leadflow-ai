@@ -1,4 +1,4 @@
-import { test, expect, createLeadViaUi } from "./fixtures";
+import { test, expect, adminScript, createLeadViaUi } from "./fixtures";
 
 // Runs on the "mobile" project (Pixel 7 viewport).
 test("core flow works on a mobile viewport without horizontal scroll", async ({ page, user }) => {
@@ -12,4 +12,15 @@ test("core flow works on a mobile viewport without horizontal scroll", async ({ 
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
     expect(overflow, `horizontal overflow on ${path}`).toBeLessThanOrEqual(0);
   }
+});
+
+test("admin page works on a mobile viewport without horizontal scroll", async ({ page, user }) => {
+  test.skip(!!process.env.BASE_URL, "needs direct database access");
+  adminScript("grant", user.email);
+  await page.setViewportSize({ width: 360, height: 800 }); // smallest common phone width
+  await page.goto("/admin");
+  await expect(page.getByRole("heading", { level: 1, name: "Admin" })).toBeVisible();
+  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+  adminScript("revoke", user.email);
+  expect(overflow).toBeLessThanOrEqual(0);
 });
