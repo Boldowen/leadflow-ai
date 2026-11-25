@@ -16,7 +16,9 @@ test.describe("Admin", () => {
   });
 
   test("the admin script refuses the public demo account and unknown emails", () => {
-    expect(() => adminScript("grant", "demo@leadflow.dev")).toThrow(/Refusing/);
+    for (const email of ["demo@emberza.dev", "demo@leadflow.dev"]) {
+      expect(() => adminScript("grant", email)).toThrow(/Refusing/);
+    }
     test.skip(!!process.env.BASE_URL, "needs direct database access");
     expect(() => adminScript("grant", "nobody@example.invalid")).toThrow(/No account/);
   });

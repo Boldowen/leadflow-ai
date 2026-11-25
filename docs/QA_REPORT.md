@@ -1,4 +1,4 @@
-# QA Report — LeadFlow AI
+# QA Report — Emberza
 
 **Build:** local production build (`next build && next start`) · **Date:** 2026-10-07
 **Scope:** authentication, access control, lead CRUD, AI analysis, REST API, website-form automation, responsive layout

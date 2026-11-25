@@ -8,7 +8,8 @@ import "dotenv/config";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "../src/generated/prisma/client";
 
-const DEMO_EMAIL = "demo@leadflow.dev"; // its password is public
+// Their passwords are public. The old address may still exist in deployed databases.
+const DEMO_EMAILS = ["demo@emberza.dev", "demo@leadflow.dev"];
 
 async function main() {
   const [command, rawEmail] = process.argv.slice(2);
@@ -18,7 +19,7 @@ async function main() {
   if (command !== "list" && !(["grant", "revoke"].includes(command) && email)) {
     throw new Error("Usage: npm run admin -- <grant|revoke> <email>  |  npm run admin -- list");
   }
-  if (command === "grant" && email === DEMO_EMAIL) {
+  if (command === "grant" && email && DEMO_EMAILS.includes(email)) {
     throw new Error("Refusing: the demo account's password is public.");
   }
 

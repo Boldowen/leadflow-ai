@@ -1,6 +1,6 @@
 # Website form → AI → Google Sheets → Telegram
 
-LeadFlow's automation turns any website contact form into a qualified, logged, notified lead — without the visitor waiting.
+Emberza's automation turns any website contact form into a qualified, logged, notified lead — without the visitor waiting.
 
 ```
 Website form ──POST──► /api/forms/:formKey

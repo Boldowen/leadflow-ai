@@ -12,7 +12,7 @@ async function main() {
   await page.screenshot({ path: `${out}/landing.png` });
 
   await page.goto(`${base}/login`);
-  await page.getByLabel("Email").fill("demo@leadflow.dev");
+  await page.getByLabel("Email").fill("demo@emberza.dev");
   await page.getByLabel("Password").fill("demo12345");
   await page.getByRole("button", { name: "Log in" }).click();
   await page.waitForURL("**/dashboard");

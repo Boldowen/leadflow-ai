@@ -1,4 +1,4 @@
-// Demo data: `npm run db:seed` → log in as demo@leadflow.dev / demo12345
+// Demo data: `npm run db:seed` → log in as demo@emberza.dev / demo12345
 import "dotenv/config";
 import bcrypt from "bcryptjs";
 import { PrismaPg } from "@prisma/adapter-pg";
@@ -34,9 +34,9 @@ const leads = [
 
 async function main() {
   const user = await db.user.upsert({
-    where: { email: "demo@leadflow.dev" },
+    where: { email: "demo@emberza.dev" },
     update: {},
-    create: { name: "Demo User", email: "demo@leadflow.dev", passwordHash: await bcrypt.hash("demo12345", 10) },
+    create: { name: "Demo User", email: "demo@emberza.dev", passwordHash: await bcrypt.hash("demo12345", 10) },
   });
   await db.automationRun.deleteMany({ where: { ownerId: user.id } });
   await db.lead.deleteMany({ where: { ownerId: user.id } });
@@ -50,7 +50,7 @@ async function main() {
       },
     });
   }
-  console.log(`Seeded ${leads.length} leads for demo@leadflow.dev (password: demo12345)`);
+  console.log(`Seeded ${leads.length} leads for demo@emberza.dev (password: demo12345)`);
 }
 
 main().finally(() => db.$disconnect());

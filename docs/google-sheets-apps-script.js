@@ -1,8 +1,8 @@
 /**
- * LeadFlow AI → Google Sheets
+ * Emberza → Google Sheets
  * 1. Open your sheet → Extensions → Apps Script, paste this file, Save.
  * 2. Deploy → New deployment → Web app. Execute as: Me. Who has access: Anyone.
- * 3. Copy the web app URL (https://script.google.com/macros/s/…/exec) into LeadFlow → Automation.
+ * 3. Copy the web app URL (https://script.google.com/macros/s/…/exec) into Emberza → Automation.
  */
 const HEADERS = ["createdAt", "name", "email", "company", "temperature", "summary", "nextAction", "message"];
 
