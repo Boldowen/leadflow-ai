@@ -13,22 +13,26 @@ enum Role {
 }
 
 model User {
-  id           String   @id @default(cuid())
-  name         String
-  email        String   @unique
-  passwordHash String
-  /// ADMIN is only ever granted with `npm run admin` — never through the app.
-  role         Role     @default(USER)
-  createdAt    DateTime @default(now())
-  leads        Lead[]
+  id             String   @id @default(cuid())
+  name           String
+  email          String   @unique
+  passwordHash   String
+  /// The first ADMIN is granted with `npm run admin`; admins can then manage roles in /admin.
+  role           Role     @default(USER)
+  /// Embedded in the session token; bumping it signs the user out everywhere.
+  sessionVersion Int      @default(0)
+  createdAt      DateTime @default(now())
+  leads          Lead[]
 
   // Automation: public form key + optional integrations
-  formKey          String  @unique @default(cuid())
-  telegramBotToken String?
-  telegramChatId   String?
-  sheetsWebhookUrl String?
-  automationRuns   AutomationRun[]
-  aiCalls          AiCall[]
+  formKey             String               @unique @default(cuid())
+  telegramBotToken    String?
+  telegramChatId      String?
+  sheetsWebhookUrl    String?
+  automationRuns      AutomationRun[]
+  aiCalls             AiCall[]
+  passwordResetTokens PasswordResetToken[]
+  auditLogs           AuditLog[]
 }
 
 enum LeadStatus {
@@ -46,14 +50,14 @@ enum LeadTemperature {
 }
 
 model Lead {
-  id        String     @id @default(cuid())
-  name      String
-  email     String
-  company   String?
-  message   String     @default("")
-  notes     String     @default("")
-  status    LeadStatus @default(NEW)
-  source    String     @default("manual")
+  id      String     @id @default(cuid())
+  name    String
+  email   String
+  company String?
+  message String     @default("")
+  notes   String     @default("")
+  status  LeadStatus @default(NEW)
+  source  String     @default("manual")
 
   // AI analysis (filled by /analyze)
   aiSummary     String?
@@ -101,5 +105,42 @@ model AiCall {
   createdAt DateTime @default(now())
 
   @@index([ownerId, createdAt])
+  @@index([createdAt])
+}
+
+/// Single-use password reset link. Only the SHA-256 of the token is stored.
+model PasswordResetToken {
+  id        String    @id @default(cuid())
+  tokenHash String    @unique
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([userId])
+}
+
+/// Fixed-window rate limit counters shared by all serverless instances.
+model RateLimitHit {
+  id        String   @id @default(cuid())
+  key       String
+  createdAt DateTime @default(now())
+
+  @@index([key, createdAt])
+  @@index([createdAt])
+}
+
+/// Admin actions. Emails are copied so the log survives deleted accounts.
+model AuditLog {
+  id          String   @id @default(cuid())
+  actorId     String?
+  actor       User?    @relation(fields: [actorId], references: [id], onDelete: SetNull)
+  actorEmail  String
+  action      String
+  targetEmail String?
+  detail      String?
+  createdAt   DateTime @default(now())
+
   @@index([createdAt])
 }

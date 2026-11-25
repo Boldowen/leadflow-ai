@@ -2,16 +2,32 @@ import { z } from "zod";
 
 export const LEAD_STATUSES = ["NEW", "CONTACTED", "QUALIFIED", "WON", "LOST"] as const;
 
-export const registerSchema = z.object({
-  name: z.string().trim().min(2, "Name must be at least 2 characters").max(80),
-  email: z.email("Enter a valid email").trim().toLowerCase(),
-  password: z.string().min(8, "Password must be at least 8 characters").max(128),
-});
+/** bcrypt only reads the first 72 bytes, so longer passwords would be silently truncated. */
+export const newPassword = z
+  .string()
+  .min(8, "Password must be at least 8 characters")
+  .refine((p) => new TextEncoder().encode(p).length <= 72, "Password is too long (max 72 bytes)");
+
+export const nameField = z.string().trim().min(2, "Name must be at least 2 characters").max(80);
+export const emailField = z.email("Enter a valid email").trim().toLowerCase().max(254);
+
+export const registerSchema = z.object({ name: nameField, email: emailField, password: newPassword });
 
 export const loginSchema = z.object({
   email: z.email("Enter a valid email").trim().toLowerCase(),
-  password: z.string().min(1, "Password is required"),
+  password: z.string().min(1, "Password is required").max(200),
 });
+
+export const forgotPasswordSchema = z.object({ email: emailField });
+
+export const resetPasswordSchema = z
+  .object({ token: z.string().min(20).max(200), password: newPassword, confirm: z.string() })
+  .refine((d) => d.password === d.confirm, { message: "Passwords don't match", path: ["confirm"] });
+
+/** Only same-site app paths may be used as a post-login redirect. */
+export function safeNextPath(next: unknown) {
+  return typeof next === "string" && /^\/(dashboard|admin)(\/[\w\-/]*)?$/.test(next) ? next : "/dashboard";
+}
 
 const leadFields = {
   name: z.string().trim().min(1, "Name is required").max(120),

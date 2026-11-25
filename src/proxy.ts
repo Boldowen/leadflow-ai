@@ -11,7 +11,8 @@ export async function proxy(request: NextRequest) {
     url.searchParams.set("next", pathname);
     return NextResponse.redirect(url);
   }
-  if ((pathname === "/login" || pathname === "/register") && session) {
+  const expired = request.nextUrl.searchParams.has("expired");
+  if ((pathname === "/login" || pathname === "/register") && session && !expired) {
     return NextResponse.redirect(new URL("/dashboard", request.url));
   }
   return NextResponse.next();

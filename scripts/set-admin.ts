@@ -1,14 +1,18 @@
-// Grants or revokes admin. There is no in-app way to do this: emails aren't verified at sign-up,
-// so an email allowlist would let anyone register a listed address and become admin.
+// Grants or revokes admin from the command line — needed for the first admin; after that admins can
+// also manage roles in /admin. Emails aren't verified at sign-up, so there is deliberately no email allowlist.
 //   npm run admin -- grant you@example.com
 //   npm run admin -- revoke you@example.com
 //   npm run admin -- list
 // Uses DATABASE_URL (from .env unless already set in the shell).
 import "dotenv/config";
+import net from "node:net";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "../src/generated/prisma/client";
 
 // Their passwords are public. The old address may still exist in deployed databases.
+// Remote databases can be >250 ms away; Node's default per-address connect timeout would then fail every attempt.
+net.setDefaultAutoSelectFamilyAttemptTimeout(2000);
+
 const DEMO_EMAILS = ["demo@emberza.dev", "demo@leadflow.dev"];
 
 async function main() {
