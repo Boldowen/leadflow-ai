@@ -6,7 +6,7 @@ import { login, register, type AuthState } from "@/app/actions/auth";
 import { SubmitButton } from "@/components/submit-button";
 import { Field } from "@/components/ui";
 
-export function AuthForm({ mode }: { mode: "login" | "register" }) {
+export function AuthForm({ mode, next, notice }: { mode: "login" | "register"; next?: string; notice?: string }) {
   const [state, action] = useActionState<AuthState, FormData>(mode === "login" ? login : register, undefined);
   const e = state?.errors ?? {};
   const v = state?.values ?? {};
@@ -14,6 +14,12 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
 
   return (
     <form action={action} className="space-y-4" noValidate>
+      {notice && !e.form && (
+        <p role="status" className="rounded-lg bg-indigo-50 px-3 py-2 text-sm text-indigo-800">
+          {notice}
+        </p>
+      )}
+      {isLogin && next && <input type="hidden" name="next" value={next} />}
       {e.form && (
         <p role="alert" className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">
           {e.form}
@@ -37,6 +43,13 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
           aria-invalid={!!e.password}
         />
       </Field>
+      {isLogin && (
+        <p className="-mt-2 text-right text-sm">
+          <Link href="/forgot-password" className="font-medium text-indigo-600 hover:underline">
+            Forgot password?
+          </Link>
+        </p>
+      )}
       <SubmitButton className="w-full" pendingText={isLogin ? "Logging in…" : "Creating account…"}>
         {isLogin ? "Log in" : "Create account"}
       </SubmitButton>

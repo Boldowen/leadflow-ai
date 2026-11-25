@@ -5,7 +5,8 @@ import { SignJWT, jwtVerify } from "jose";
 export const SESSION_COOKIE = "leadflow_session";
 const SESSION_TTL_SECONDS = 60 * 60 * 24 * 7; // 7 days
 
-type SessionPayload = { userId: string };
+/** `v` must match User.sessionVersion; bumping that column revokes every token issued before. */
+type SessionPayload = { userId: string; v: number };
 
 function secretKey() {
   const secret = process.env.SESSION_SECRET;
@@ -27,14 +28,16 @@ export async function verifySession(token: string | undefined): Promise<SessionP
   if (!token) return null;
   try {
     const { payload } = await jwtVerify(token, secretKey(), { algorithms: ["HS256"] });
-    return typeof payload.userId === "string" ? { userId: payload.userId } : null;
+    if (typeof payload.userId !== "string") return null;
+    // Tokens issued before versioning existed carry no `v`; they match version 0.
+    return { userId: payload.userId, v: typeof payload.v === "number" ? payload.v : 0 };
   } catch {
     return null;
   }
 }
 
-export async function createSession(userId: string) {
-  const token = await signSession({ userId });
+export async function createSession(userId: string, sessionVersion: number) {
+  const token = await signSession({ userId, v: sessionVersion });
   (await cookies()).set(SESSION_COOKIE, token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",

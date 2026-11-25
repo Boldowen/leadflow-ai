@@ -18,12 +18,15 @@ Full-stack Next.js app with a REST API, PostgreSQL, session auth, AI integration
 
 ## Features
 
-- **Auth** — register / login / logout with bcrypt-hashed passwords and a signed, httpOnly JWT session cookie. Protected routes via Next.js Proxy plus server-side checks on every page, action and API route.
+- **Auth** — register / login / logout with bcrypt-hashed passwords and a signed, httpOnly JWT session cookie. Protected routes via Next.js Proxy plus server-side checks on every page, action and API route. Sessions are versioned, so a password change or "sign out everywhere" revokes every existing session.
+- **Forgot password** — single-use reset links (only a SHA-256 of the token is stored) that expire after 30 minutes, sent through [Resend](https://resend.com). Responses never reveal whether an account exists.
 - **Lead management** — create, edit, delete, search and filter leads by status. Every query is scoped to the owner, so users can never see each other's data.
 - **AI analysis** — Claude (`claude-opus-5-5`) returns a validated JSON object `{ summary, temperature, nextAction }` via structured outputs (Zod schema). The lead text is treated as untrusted input. Refusals and API errors are handled with user-friendly messages.
 - **Website form automation** — website form → validation + spam check → lead saved → AI qualification → Google Sheets row → Telegram alert, running in the background with a per-step run log (`SUCCESS` / `PARTIAL` / `FAILED`). Hosted form, HTML embed and JSON webhook. See [docs/AUTOMATION.md](docs/AUTOMATION.md).
 - **Offline mode** — without `ANTHROPIC_API_KEY` (or with `AI_MOCK=1`) a deterministic keyword analyzer is used, so the demo and CI work with no API cost.
-- **Admin page** — `/admin` shows users, lead counts, AI usage and failed automation runs across all accounts, without exposing lead contents or secrets. Admins are granted only from the command line: `npm run admin -- grant you@example.com` (also `revoke`, `list`). The role is checked in the DB on every request; everyone else gets a 404.
+- **Admin area** — `/admin` shows users, lead counts, AI usage and failed automation runs across all accounts, without exposing lead contents or secrets. Per user, admins can edit the profile, set a password or email a reset link, sign the user out everywhere, change the role and delete the account; every action is written to an audit log. Admins can't change or delete themselves. The first admin is granted from the command line: `npm run admin -- grant you@example.com` (also `revoke`, `list`). The role is checked in the DB on every request; everyone else gets a 404.
+- **Security** — database-backed rate limits on login (per account and per IP), sign-up, password reset and the public form; constant-time login for unknown emails; safe post-login redirects; JSON-only API; CSP, HSTS, `X-Frame-Options`, `nosniff`, `Referrer-Policy` and `Permissions-Policy` headers (only the hosted form may be embedded).
+- **SEO** — canonical URLs, Open Graph / Twitter cards with a generated preview image, `SoftwareApplication` JSON-LD, `robots.txt`, `sitemap.xml`, web manifest and icons; private pages are `noindex`.
 - **REST API** — `GET/POST /api/leads`, `GET/PATCH/DELETE /api/leads/:id`, `POST /api/leads/:id/analyze`, `GET /api/health`, public `POST /api/forms/:formKey`. Validation errors return `422` with per-field details.
 - **Polish** — loading skeletons, error boundary, empty states, accessible forms (labels, `aria-invalid`, `role="alert"`), responsive layout.
 
@@ -58,9 +61,9 @@ npm run db:seed                 # demo@emberza.dev / demo12345
 npm run dev                     # http://localhost:3100
 ```
 
-Add `ANTHROPIC_API_KEY` to `.env` to use real Claude analysis.
+Add `ANTHROPIC_API_KEY` to `.env` to use real Claude analysis. Without `RESEND_API_KEY`, password-reset links are printed to the dev server console.
 
-**Deploy (Vercel + Neon):** connect a Neon database to the Vercel project, set `SESSION_SECRET` and `APP_URL`, then push to `main` — Vercel deploys automatically and migrations run during the build (`vercel.json`). Pull requests get preview deployments. Seed a deployed instance through its own API with `BASE_URL=https://… npx tsx scripts/seed-remote.ts`.
+**Deploy (Vercel + Neon):** connect a Neon database to the Vercel project, set `SESSION_SECRET`, `APP_URL`, `RESEND_API_KEY` and `EMAIL_FROM`, then push to `main` — Vercel deploys automatically and migrations run during the build (`vercel.json`). Pull requests get preview deployments. Seed a deployed instance through its own API with `BASE_URL=https://… npx tsx scripts/seed-remote.ts`.
 
 **Run everything in Docker:** `SESSION_SECRET=... docker compose --profile app up --build` (run `npm run db:deploy` against the DB once).
 
@@ -72,7 +75,7 @@ npm run test:e2e:ui     # Playwright UI mode
 npx playwright show-report
 ```
 
-**37 end-to-end tests** across desktop Chrome and a Pixel 7 viewport:
+**50 end-to-end tests** across desktop Chrome and a Pixel 7 viewport:
 
 | Area | What is covered |
 | --- | --- |
@@ -82,7 +85,9 @@ npx playwright show-report
 | AI analysis | hot / cold classification, summary + next action rendered, dashboard stats update, empty-message error |
 | REST API | health check, 401 without session, full CRUD + analyze, 422/400 on bad payloads, cross-user 404s, PATCH partial update |
 | Automation | hosted form → AI-qualified lead + run log, public form validation, JSON / HTML-form / honeypot / unknown key, rate limiting (429), integration settings validation (SSRF guard), Telegram test |
-| Admin | redirect when signed out, 404 for regular users, usage + user search, no lead contents shown, instant revoke, admin script guards |
+| Admin | redirect when signed out, 404 for regular users, usage + user search, no lead contents shown, instant revoke, admin script guards, edit / set password / reset email / role / sign-out-everywhere / delete with audit log, self-lockout guards |
+| Password reset | email link flow, revoked sessions, single-use and fake tokens, no account enumeration, per-account login lockout, safe `next` redirect |
+| Security & SEO | security headers, embeddable hosted form, canonical + OG + JSON-LD, robots / sitemap / icons, `noindex` on private pages |
 | Responsive | core flow on mobile, no horizontal overflow |
 
 CI (`.github/workflows/ci.yml`) runs lint → typecheck → migrations → Playwright against a Postgres service container on every push and PR, and uploads the HTML report as an artifact.

@@ -1,4 +1,7 @@
+import type { Metadata } from "next";
+import Link from "next/link";
 import { Logo } from "@/components/logo";
+import { appUrl } from "@/lib/app-url";
 import { ButtonLink } from "@/components/ui";
 
 const features = [
@@ -18,9 +21,25 @@ const features = [
 
 const steps = ["Lead arrives", "AI summary", "Hot / Warm / Cold", "Next action", "Follow up"];
 
+export const metadata: Metadata = { alternates: { canonical: "/" } };
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "Emberza",
+  url: appUrl(),
+  applicationCategory: "BusinessApplication",
+  operatingSystem: "Web",
+  description:
+    "AI lead qualification for small teams: Emberza summarizes every inbound lead, scores it Hot, Warm or Cold and suggests the next step.",
+  offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+  featureList: ["AI lead summaries", "Hot / Warm / Cold lead scoring", "Website form capture", "Google Sheets and Telegram alerts"],
+};
+
 export default function Home() {
   return (
     <div className="flex flex-1 flex-col">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
       <header className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-5 sm:px-6">
         <Logo />
         <nav className="flex items-center gap-2">
@@ -68,6 +87,10 @@ export default function Home() {
       </main>
 
       <footer className="border-t border-slate-200 py-6 text-center text-sm text-slate-500">
+        <nav aria-label="Footer" className="mb-2 flex justify-center gap-4">
+          <Link href="/register" className="hover:text-slate-900">Sign up free</Link>
+          <Link href="/login" className="hover:text-slate-900">Log in</Link>
+        </nav>
         Built with Next.js, PostgreSQL, Prisma, Claude and Playwright.
       </footer>
     </div>

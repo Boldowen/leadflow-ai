@@ -1,6 +1,8 @@
 import { after, type NextRequest } from "next/server";
 import { db } from "@/lib/db";
-import { rateLimit, runInboundWorkflow } from "@/lib/automation";
+import { runInboundWorkflow } from "@/lib/automation";
+import { rateLimit } from "@/lib/rate-limit";
+import { ipFrom } from "@/lib/request-ip";
 import { createLead } from "@/lib/leads";
 import { fieldErrors, publicFormSchema } from "@/lib/validation";
 
@@ -21,8 +23,8 @@ export async function POST(request: NextRequest, ctx: RouteContext<"/api/forms/[
   const { formKey } = await ctx.params;
   const isHtmlForm = !request.headers.get("content-type")?.includes("application/json");
 
-  const ip = request.headers.get("x-forwarded-for")?.split(",")[0].trim() ?? "unknown";
-  if (!rateLimit(`${formKey}:${ip}`)) return reply({ error: "Too many submissions. Try again in a minute." }, 429);
+  if (formKey.length > 64) return reply({ error: "Form not found" }, 404);
+  if (!(await rateLimit(`form:${formKey}:${ipFrom(request.headers)}`, 10, 60_000))) return reply({ error: "Too many submissions. Try again in a minute." }, 429);
 
   const owner = await db.user.findUnique({ where: { formKey }, select: { id: true } });
   if (!owner) return reply({ error: "Form not found" }, 404);

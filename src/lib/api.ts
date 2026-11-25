@@ -15,6 +15,10 @@ export async function authed() {
 }
 
 export async function parseBody<T extends z.ZodType>(request: Request, schema: T) {
+  // Requiring JSON forces a CORS preflight for cross-site requests (defence in depth on top of SameSite cookies).
+  if (!request.headers.get("content-type")?.toLowerCase().startsWith("application/json")) {
+    return { response: apiError(415, "Content-Type must be application/json") };
+  }
   let body: unknown;
   try {
     body = await request.json();

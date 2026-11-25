@@ -46,8 +46,11 @@ test.describe("REST API", () => {
     expect(body.error).toBe("Validation failed");
     expect(body.details).toHaveProperty("email");
 
+    // Non-JSON content types are refused (cross-site "simple" requests can't reach the handler).
     const notJson = await page.request.post("/api/leads", { data: "plain text", headers: { "content-type": "text/plain" } });
-    expect(notJson.status()).toBe(400);
+    expect(notJson.status()).toBe(415);
+    const badJson = await page.request.post("/api/leads", { data: Buffer.from("{oops"), headers: { "content-type": "application/json" } });
+    expect(badJson.status()).toBe(400);
   });
 
   test("users cannot read, edit or delete each other's leads", async ({ page, browser }) => {

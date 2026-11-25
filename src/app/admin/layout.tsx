@@ -1,8 +1,12 @@
+import type { Metadata } from "next";
 import { AppHeader } from "@/components/app-header";
 import { requireAdmin } from "@/lib/dal";
 
 // The page and lib/admin.ts check again: layouts don't re-render on client navigation.
 // No loading.tsx here on purpose — it would start streaming before notFound() can set a real 404 status.
+// Private app pages: keep them out of search results.
+export const metadata: Metadata = { robots: { index: false, follow: false } };
+
 export default async function AdminLayout({ children }: LayoutProps<"/admin">) {
   const user = await requireAdmin();
   return (
