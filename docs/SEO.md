@@ -12,7 +12,7 @@ What is in place, how to verify it, and what still has to happen outside the cod
 | Structured data | Home: Organization, WebSite, SoftwareApplication, FAQPage. Docs and Privacy: BreadcrumbList (`src/lib/seo.ts`, `src/components/site/json-ld.tsx`) |
 | robots.txt / sitemap.xml | `src/app/robots.ts`, `src/app/sitemap.ts` — only `/`, `/docs`, `/privacy` are listed |
 | noindex | Login, sign-up, password reset, dashboard, admin, hosted forms, 404, and every non-production Vercel deployment (`X-Robots-Tag` + robots metadata) |
-| Public pages | `/` (≈1,000 words), `/docs`, `/privacy` — static HTML, no JavaScript needed to read them |
+| Public pages | `/` (≈640 words since the redesign; FAQ answers stay in the HTML while collapsed), `/docs`, `/privacy` — static HTML, no JavaScript needed to read them |
 
 Brand sources live in `design/brand/` (original `icon.png`, `logo.png`). The logo artwork has its own near-black background (#000007), so it is used on dark surfaces (site footer, social image); light headers use the icon plus the name as text.
 

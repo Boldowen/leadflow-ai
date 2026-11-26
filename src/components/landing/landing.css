@@ -1,0 +1,83 @@
+/* Landing page effects ported from the design prototype. Scoped with the lp- prefix. */
+.lp-root {
+  font-family: var(--font-inter), system-ui, sans-serif;
+  background-color: #0a0a0f;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 28px 28px;
+  color: #e4e4e7;
+  color-scheme: dark;
+}
+.lp-display { font-family: var(--font-space), var(--font-inter), sans-serif; }
+.lp-root a:focus-visible,
+.lp-root button:focus-visible { outline: 2px solid #a5b4fc; outline-offset: 3px; }
+
+@keyframes lp-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+@keyframes lp-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes lp-fade-up { from { opacity: 0; transform: translateY(18px); filter: blur(6px); } to { opacity: 1; transform: none; filter: none; } }
+@keyframes lp-pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+@keyframes lp-spin { to { transform: rotate(360deg); } }
+@keyframes lp-gradmove { to { background-position: 300% 0; } }
+@keyframes lp-drift {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(120px, 60px) scale(1.15); }
+  66% { transform: translate(-60px, 100px) scale(0.9); }
+}
+@keyframes lp-row-in { from { opacity: 0; transform: translateX(-24px); } to { opacity: 1; transform: none; } }
+@keyframes lp-glow { 0%, 100% { box-shadow: 0 0 0 rgba(251, 146, 60, 0); } 50% { box-shadow: 0 0 18px rgba(251, 146, 60, 0.65); } }
+@keyframes lp-ring { 0% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.7); } 100% { box-shadow: 0 0 0 18px rgba(99, 102, 241, 0); } }
+@keyframes lp-shine { 0%, 60% { transform: translateX(-120%) skewX(-20deg); } 100% { transform: translateX(220%) skewX(-20deg); } }
+
+.lp-float { animation: lp-float 5s ease-in-out infinite; }
+.lp-float-2 { animation: lp-float 6s ease-in-out 1s infinite; }
+.lp-marquee { animation: lp-marquee 30s linear infinite; }
+.lp-marquee-wrap:hover .lp-marquee { animation-play-state: paused; }
+.lp-fade { animation: lp-fade-up 0.9s ease both; }
+/* The headline is the Largest Contentful Paint: it slides and un-blurs like the rest, but never starts
+   invisible, because Chrome doesn't count an opacity-0 element as painted (that cost ~2 s on mobile). */
+@keyframes lp-fade-up-visible { from { transform: translateY(18px); filter: blur(6px); } to { transform: none; filter: none; } }
+.lp-fade-lcp { animation: lp-fade-up-visible 0.9s ease both; }
+.lp-d1 { animation-delay: 0.12s; }
+.lp-d2 { animation-delay: 0.24s; }
+.lp-d3 { animation-delay: 0.36s; }
+.lp-dot { animation: lp-pulse 1s ease-in-out infinite; }
+.lp-spin { animation: lp-spin 4s linear infinite; }
+.lp-spin-slow { animation: lp-spin 8s linear infinite; }
+.lp-grad {
+  background: linear-gradient(90deg, #818cf8, #c084fc, #f0abfc, #818cf8);
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: lp-gradmove 5s linear infinite;
+}
+.lp-drift { animation: lp-drift 18s ease-in-out infinite; }
+.lp-drift-2 { animation: lp-drift 22s ease-in-out -7s infinite reverse; }
+.lp-row { animation: lp-row-in 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+.lp-hot-glow { animation: lp-glow 2s ease-in-out infinite; }
+.lp-ring-pulse { animation: lp-ring 2.2s ease-out infinite; }
+.lp-shine { position: relative; overflow: hidden; }
+.lp-shine::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 40%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+  animation: lp-shine 3.2s ease-in-out infinite;
+  pointer-events: none;
+}
+.lp-btn { transition: transform 0.2s, box-shadow 0.2s; }
+.lp-btn:hover { box-shadow: 0 12px 40px -10px rgba(99, 102, 241, 0.9); }
+.lp-card { transition: transform 0.25s, border-color 0.25s, background-color 0.25s; }
+.lp-card:hover { transform: translateY(-4px); border-color: rgba(129, 140, 248, 0.55); background-color: rgba(255, 255, 255, 0.06); }
+.lp-icon { transition: transform 0.35s cubic-bezier(0.3, 1.6, 0.5, 1); }
+.lp-card:hover .lp-icon { transform: rotate(-10deg) scale(1.15); }
+
+/* Reduced motion: stop every CSS animation and transition, and show scroll-reveal content immediately
+   (overrides the inline styles Framer Motion sets before an element enters the viewport). */
+@media (prefers-reduced-motion: reduce) {
+  .lp-root *, .lp-root *::before, .lp-root *::after { animation: none !important; transition: none !important; }
+  .lp-root [data-reveal] { opacity: 1 !important; transform: none !important; filter: none !important; }
+}
+
+/* Match the page background behind overscroll / bounce areas while the landing page is shown. */
+body:has(.lp-root) { background-color: #0a0a0f; }

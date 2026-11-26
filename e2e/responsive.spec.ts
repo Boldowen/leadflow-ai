@@ -24,3 +24,18 @@ test("admin page works on a mobile viewport without horizontal scroll", async ({
   adminScript("revoke", user.email);
   expect(overflow).toBeLessThanOrEqual(0);
 });
+
+test("landing page has no horizontal scroll at 375, 768 and 1280 px, with or without motion", async ({ page }) => {
+  for (const width of [375, 768, 1280]) {
+    await page.setViewportSize({ width, height: 900 });
+    for (const reducedMotion of ["no-preference", "reduce"] as const) {
+      await page.emulateMedia({ reducedMotion });
+      await page.goto("/");
+      const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+      expect(overflow, `${width}px ${reducedMotion}`).toBeLessThanOrEqual(0);
+    }
+  }
+  // With reduced motion every scroll-reveal block is visible straight away.
+  const hidden = await page.locator("[data-reveal]").evaluateAll((els) => els.filter((e) => getComputedStyle(e).opacity !== "1").length);
+  expect(hidden).toBe(0);
+});

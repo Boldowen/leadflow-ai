@@ -25,6 +25,39 @@ test.describe("Security headers", () => {
 
 const PUBLIC_PAGES = ["/", "/docs", "/privacy"];
 
+test.describe("Landing page interactions", () => {
+  test("scoring demo, temperature tabs and FAQ accordion work", async ({ page }) => {
+    await page.goto("/");
+    const demo = page.locator("#demo");
+    await demo.getByRole("radio", { name: /just browsing/ }).click();
+    await expect(demo.getByRole("radio", { name: /just browsing/ })).toHaveAttribute("aria-checked", "true");
+    await demo.getByRole("button", { name: "Analyze lead" }).click();
+    await expect(demo.getByText("Claude is reading the lead")).toBeVisible();
+    await expect(demo.getByText("No stated need, budget or timeline.")).toBeVisible();
+    await expect(demo.getByText("14", { exact: true })).toBeVisible();
+    await expect(demo.getByRole("button", { name: "Re-run analysis" })).toBeVisible();
+
+    await demo.getByRole("tab", { name: "Warm" }).click();
+    await expect(demo.getByRole("tab", { name: "Warm" })).toHaveAttribute("aria-selected", "true");
+    await expect(demo.getByRole("tabpanel")).toHaveText(/budget or timing is still unclear/);
+
+    const faq = page.locator("#faq");
+    const first = faq.getByRole("button", { name: "What is AI lead qualification?" });
+    const second = faq.getByRole("button", { name: "How does scoring work?" });
+    await expect(first).toHaveAttribute("aria-expanded", "true");
+    await second.click();
+    await expect(second).toHaveAttribute("aria-expanded", "true");
+    await expect(first).toHaveAttribute("aria-expanded", "false"); // single-open
+    await expect(faq.getByText("Claude looks for a clear need, budget and timeline")).toBeVisible();
+  });
+
+  test("/signup redirects to the sign-up page", async ({ request }) => {
+    const res = await request.get("/signup", { maxRedirects: 0 });
+    expect(res.status()).toBe(308);
+    expect(res.headers()["location"]).toMatch(/\/register$/);
+  });
+});
+
 test.describe("SEO", () => {
   test("home page has the target title, description, canonical, social preview and structured data", async ({ page }) => {
     await page.goto("/");
@@ -50,9 +83,12 @@ test.describe("SEO", () => {
   test("crawlers get the full landing content without JavaScript", async ({ request }) => {
     const html = await (await request.get("/")).text();
     const text = html.replace(/<script[\s\S]*?<\/script>/g, "").replace(/<[^>]+>/g, " ");
-    expect(text.split(/\s+/).filter(Boolean).length).toBeGreaterThan(700);
-    for (const phrase of ["AI lead scoring", "How it works", "Frequently asked questions", "Lead management for small teams"]) expect(text).toContain(phrase);
-    expect(html).toMatch(/<img[^>]+alt="Emberza dashboard/);
+    // The redesigned landing (design/emberza-landing-demo.html) has ~640 words; the previous version had ~1,080.
+    expect(text.split(/\s+/).filter(Boolean).length).toBeGreaterThan(600);
+    for (const phrase of ["AI lead scoring", "How it works", "Questions, answered", "Built for teams that live in their inbox"]) expect(text).toContain(phrase);
+    // Collapsed FAQ answers are still in the HTML, so they match the FAQPage structured data.
+    expect(text).toContain("Connect your existing form through a webhook or the API.");
+    expect(html).toContain('aria-label="Preview of the Emberza lead dashboard with sample leads"');
   });
 
   test("every public page has a unique title, description and self-canonical, and its internal links work", async ({ page, request }) => {
