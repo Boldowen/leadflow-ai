@@ -4,7 +4,7 @@ import { AuthForm } from "@/components/auth/auth-form";
 export const metadata: Metadata = {
   title: "Sign up free",
   description: "Create a free Emberza account and let AI summarize, score and prioritize your inbound leads.",
-  alternates: { canonical: "/register" },
+  robots: { index: false, follow: true },
 };
 
 export default function RegisterPage() {

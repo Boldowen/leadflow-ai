@@ -1,11 +1,11 @@
 import type { MetadataRoute } from "next";
-import { appUrl } from "@/lib/app-url";
+import { absoluteUrl } from "@/lib/seo";
 
+// Only public, canonical, indexable pages.
 export default function sitemap(): MetadataRoute.Sitemap {
-  const base = appUrl();
   return [
-    { url: base, changeFrequency: "monthly", priority: 1 },
-    { url: `${base}/register`, changeFrequency: "yearly", priority: 0.6 },
-    { url: `${base}/login`, changeFrequency: "yearly", priority: 0.3 },
+    { url: absoluteUrl("/"), changeFrequency: "monthly", priority: 1 },
+    { url: absoluteUrl("/docs"), changeFrequency: "monthly", priority: 0.7 },
+    { url: absoluteUrl("/privacy"), lastModified: "2026-11-26", changeFrequency: "yearly", priority: 0.3 },
   ];
 }

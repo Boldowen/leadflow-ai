@@ -5,7 +5,7 @@ import { safeNextPath } from "@/lib/validation";
 export const metadata: Metadata = {
   title: "Log in",
   description: "Log in to Emberza to see your AI-qualified leads.",
-  alternates: { canonical: "/login" },
+  robots: { index: false, follow: true },
 };
 
 const notices = {

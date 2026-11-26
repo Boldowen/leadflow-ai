@@ -19,7 +19,11 @@ const csp = (frameAncestors: string) =>
     ...(process.env.VERCEL ? ["upgrade-insecure-requests"] : []),
   ].join("; ");
 
+// Vercel preview deployments must never be indexed (production sets VERCEL_ENV=production).
+const isPreview = Boolean(process.env.VERCEL_ENV) && process.env.VERCEL_ENV !== "production";
+
 const securityHeaders = [
+  ...(isPreview ? [{ key: "X-Robots-Tag", value: "noindex, nofollow" }] : []),
   { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
   { key: "X-Content-Type-Options", value: "nosniff" },
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },

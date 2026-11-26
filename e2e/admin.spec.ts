@@ -86,7 +86,7 @@ test.describe("Admin user management", () => {
       await expect(page.getByText("Password must be at least 8 characters")).toBeVisible();
       await page.getByLabel("New password").fill("admin-set-pass-1");
       await page.getByRole("button", { name: "Set password" }).click();
-      await expect(page.getByText("Password changed. The user was signed out on every device.")).toBeVisible();
+      await expect(page.getByText("Password changed. The user was signed out on every device.", { exact: true })).toBeVisible();
       await t.goto("/dashboard");
       await expect(t).toHaveURL(/\/login\?expired=1$/);
       await t.getByLabel("Email").fill(target.email);
@@ -113,7 +113,7 @@ test.describe("Admin user management", () => {
 
       // Sign out everywhere.
       await page.getByRole("button", { name: "Sign out everywhere" }).click();
-      await expect(page.getByText("Signed out on every device.")).toBeVisible();
+      await expect(page.getByText("Signed out on every device.", { exact: true })).toBeVisible();
       await t.goto("/dashboard");
       await expect(t).toHaveURL(/\/login\?expired=1$/);
 
