@@ -36,9 +36,9 @@ export function ScoringDemo() {
     stop();
     setPhase("thinking");
     setScore(0);
-    // TODO: call the real scoring API (POST /api/leads/:id/analyze, or a public demo endpoint with its own
-    // rate limit) instead of these canned results. The real analysis returns Hot/Warm/Cold, summary and next
-    // action — it has no 0–100 score yet, so the ring would need a score field added to the AI output.
+    // TODO: call the real scoring instead of these canned results. The analysis behind POST /api/leads/:id/analyze
+    // (src/lib/ai.ts) returns the same shape — temperature, 0–100 score, summary, next action — but needs a signed-in
+    // user; a public demo would need its own endpoint with a strict rate limit, since every call costs money.
     const target = PRESETS[preset].score;
     timer.current = setTimeout(() => {
       setPhase("done");

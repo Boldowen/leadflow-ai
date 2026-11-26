@@ -16,12 +16,17 @@ test.describe("AI lead analysis", () => {
     await expect(result).toBeVisible();
     await expect(result).toContainText("Hot Prospect (Startup Inc)");
     await expect(result).toContainText("book a 20-minute call");
-    await expect(page.getByTestId("temperature-badge")).toHaveText(/Hot/);
+    await expect(page.getByTestId("temperature-badge")).toHaveText(/Hot · \d+/);
+    // The 0–100 score always sits inside the Hot band.
+    const score = Number(await page.getByTestId("ai-score").textContent());
+    expect(score).toBeGreaterThanOrEqual(70);
+    expect(score).toBeLessThanOrEqual(100);
     await expect(page.getByRole("button", { name: "Re-analyze" })).toBeVisible();
 
     // Score shows up on the dashboard too.
     await page.goto("/dashboard");
     await expect(page.getByTestId("stat-hot")).toHaveText("1");
+    await expect(page.getByTestId("temperature-badge")).toHaveText(new RegExp(`Hot · ${score}`));
   });
 
   test("cold leads are classified as cold", async ({ page, user }) => {
@@ -33,6 +38,9 @@ test.describe("AI lead analysis", () => {
     });
     await page.getByRole("button", { name: "Analyze with AI" }).click();
     await expect(page.getByTestId("temperature-badge")).toHaveText(/Cold/);
+    const score = Number(await page.getByTestId("ai-score").textContent());
+    expect(score).toBeGreaterThanOrEqual(0);
+    expect(score).toBeLessThanOrEqual(39);
   });
 
   test("analysis without a message shows a helpful error", async ({ page, user }) => {

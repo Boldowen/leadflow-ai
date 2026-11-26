@@ -76,6 +76,7 @@ export async function runLeadAnalysis(ownerId: string, id: string) {
     data: {
       aiSummary: result.summary,
       aiTemperature: result.temperature,
+      aiScore: result.score,
       aiNextAction: result.nextAction,
       aiModel: result.model,
       analyzedAt: new Date(),

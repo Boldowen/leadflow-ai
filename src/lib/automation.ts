@@ -37,7 +37,7 @@ export async function runInboundWorkflow(ownerId: string, leadId: string) {
   steps.push(
     await timed("ai", async () => {
       const lead = await runLeadAnalysis(ownerId, leadId);
-      return lead?.aiTemperature ?? undefined;
+      return lead?.aiTemperature ? `${lead.aiTemperature}${lead.aiScore != null ? ` ${lead.aiScore}` : ""}` : undefined;
     }),
   );
 
@@ -54,6 +54,7 @@ export async function runInboundWorkflow(ownerId: string, leadId: string) {
             company: lead.company ?? "",
             message: lead.message,
             temperature: lead.aiTemperature ?? "",
+            score: lead.aiScore != null ? String(lead.aiScore) : "",
             summary: lead.aiSummary ?? "",
             nextAction: lead.aiNextAction ?? "",
           }),
@@ -66,7 +67,7 @@ export async function runInboundWorkflow(ownerId: string, leadId: string) {
       ? await timed("telegram", () => {
           const temp = lead.aiTemperature;
           const lines = [
-            `<b>${temp ? `${TEMP_EMOJI[temp]} ${temp}` : "📩 New"} lead</b>`,
+            `<b>${temp ? `${TEMP_EMOJI[temp]} ${temp}${lead.aiScore != null ? ` · ${lead.aiScore}/100` : ""}` : "📩 New"} lead</b>`,
             `${escapeHtml(lead.name)}${lead.company ? ` (${escapeHtml(lead.company)})` : ""} · ${escapeHtml(lead.email)}`,
             lead.aiSummary ? `\n<b>Summary:</b> ${escapeHtml(lead.aiSummary)}` : `\n${escapeHtml(lead.message.slice(0, 300))}`,
             lead.aiNextAction ? `<b>Next:</b> ${escapeHtml(lead.aiNextAction)}` : null,

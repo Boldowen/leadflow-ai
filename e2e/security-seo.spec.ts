@@ -83,7 +83,7 @@ test.describe("SEO", () => {
   test("crawlers get the full landing content without JavaScript", async ({ request }) => {
     const html = await (await request.get("/")).text();
     const text = html.replace(/<script[\s\S]*?<\/script>/g, "").replace(/<[^>]+>/g, " ");
-    // The redesigned landing (design/emberza-landing-demo.html) has ~640 words; the previous version had ~1,080.
+    // The redesigned landing has ~640 words; the previous version had ~1,080.
     expect(text.split(/\s+/).filter(Boolean).length).toBeGreaterThan(600);
     for (const phrase of ["AI lead scoring", "How it works", "Questions, answered", "Built for teams that live in their inbox"]) expect(text).toContain(phrase);
     // Collapsed FAQ answers are still in the HTML, so they match the FAQPage structured data.

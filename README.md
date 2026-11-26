@@ -21,7 +21,7 @@ Full-stack Next.js app with a REST API, PostgreSQL, session auth, AI integration
 - **Auth** — register / login / logout with bcrypt-hashed passwords and a signed, httpOnly JWT session cookie. Protected routes via Next.js Proxy plus server-side checks on every page, action and API route. Sessions are versioned, so a password change or "sign out everywhere" revokes every existing session.
 - **Forgot password** — single-use reset links (only a SHA-256 of the token is stored) that expire after 30 minutes, sent through [Resend](https://resend.com). Responses never reveal whether an account exists.
 - **Lead management** — create, edit, delete, search and filter leads by status. Every query is scoped to the owner, so users can never see each other's data.
-- **AI analysis** — Claude (`claude-opus-5-5`) returns a validated JSON object `{ summary, temperature, nextAction }` via structured outputs (Zod schema). The lead text is treated as untrusted input. Refusals and API errors are handled with user-friendly messages.
+- **AI analysis** — Claude (`claude-opus-5-5`) returns a validated JSON object `{ summary, temperature, score, nextAction }` via structured outputs (Zod schema); the 0–100 score is kept inside its temperature band (Hot 70–100, Warm 40–69, Cold 0–39). The lead text is treated as untrusted input. Refusals and API errors are handled with user-friendly messages.
 - **Website form automation** — website form → validation + spam check → lead saved → AI qualification → Google Sheets row → Telegram alert, running in the background with a per-step run log (`SUCCESS` / `PARTIAL` / `FAILED`). Hosted form, HTML embed and JSON webhook. See [docs/AUTOMATION.md](docs/AUTOMATION.md).
 - **Offline mode** — without `ANTHROPIC_API_KEY` (or with `AI_MOCK=1`) a deterministic keyword analyzer is used, so the demo and CI work with no API cost.
 - **Admin area** — `/admin` shows users, lead counts, AI usage and failed automation runs across all accounts, without exposing lead contents or secrets. Per user, admins can edit the profile, set a password or email a reset link, sign the user out everywhere, change the role and delete the account; every action is written to an audit log. Admins can't change or delete themselves. The first admin is granted from the command line: `npm run admin -- grant you@example.com` (also `revoke`, `list`). The role is checked in the DB on every request; everyone else gets a 404.
@@ -75,18 +75,19 @@ npm run test:e2e:ui     # Playwright UI mode
 npx playwright show-report
 ```
 
-**52 end-to-end tests** across desktop Chrome and a Pixel 7 viewport:
+**55 end-to-end tests** across desktop Chrome and a Pixel 7 viewport:
 
 | Area | What is covered |
 | --- | --- |
 | Authentication | register, login/logout, wrong password, unknown email (same generic error), input validation, duplicate email |
 | Access control | redirect when signed out, forged session cookie, signed-in redirect away from /login, cross-user lead isolation (UI) |
 | Lead CRUD | create, validation with preserved input, edit + persistence after reload, delete, cancel delete, search + status filter |
-| AI analysis | hot / cold classification, summary + next action rendered, dashboard stats update, empty-message error |
+| AI analysis | hot / cold classification with in-band 0–100 scores, summary + next action rendered, dashboard stats and score badges, empty-message error |
 | REST API | health check, 401 without session, full CRUD + analyze, 422/400 on bad payloads, cross-user 404s, PATCH partial update |
 | Automation | hosted form → AI-qualified lead + run log, public form validation, JSON / HTML-form / honeypot / unknown key, rate limiting (429), integration settings validation (SSRF guard), Telegram test |
 | Admin | redirect when signed out, 404 for regular users, usage + user search, no lead contents shown, instant revoke, admin script guards, edit / set password / reset email / role / sign-out-everywhere / delete with audit log, self-lockout guards |
 | Password reset | email link flow, revoked sessions, single-use and fake tokens, no account enumeration, per-account login lockout, safe `next` redirect |
+| Landing page | scoring demo (presets, thinking state, score, re-run), temperature tabs, single-open FAQ, `/signup` redirect, no horizontal scroll at 375/768/1280 px with and without reduced motion |
 | Security & SEO | security headers, embeddable hosted form, target title/description, JSON-LD matches visible FAQ, full content without JavaScript, unique titles + self-canonicals, internal link check, robots / sitemap / icons / manifest, `noindex` on auth, private and 404 pages |
 | Responsive | core flow on mobile, no horizontal overflow on landing, docs, privacy and dashboard |
 
