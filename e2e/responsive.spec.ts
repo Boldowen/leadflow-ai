@@ -7,7 +7,7 @@ test("core flow works on a mobile viewport without horizontal scroll", async ({ 
   await page.getByRole("button", { name: "Analyze with AI" }).click();
   await expect(page.getByTestId("temperature-badge")).toHaveText(/Hot/);
 
-  for (const path of ["/", "/dashboard", page.url()]) {
+  for (const path of ["/", "/docs", "/privacy", "/dashboard", page.url()]) {
     await page.goto(path);
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
     expect(overflow, `horizontal overflow on ${path}`).toBeLessThanOrEqual(0);

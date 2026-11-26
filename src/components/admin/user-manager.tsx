@@ -52,7 +52,8 @@ export function PasswordCard({ setPassword, sendLink, revoke }: { setPassword: F
         <SubmitButton pendingText="Saving…">Set password</SubmitButton>
       </form>
       <div className="space-y-3 border-t border-slate-100 pt-4">
-        <Feedback state={linkState ?? revokeState} />
+        <Feedback state={linkState} />
+        <Feedback state={revokeState} />
         <div className="flex flex-wrap gap-3">
           <form action={runLink}>
             <SubmitButton variant="secondary" pendingText="Sending…">Email a reset link</SubmitButton>
