@@ -1,4 +1,4 @@
-// Copy and data for the landing page (ported from design/emberza-landing-demo.html).
+// Copy and data for the landing page (ported from the design prototype emberza-landing-demo.html, see commit 4416796).
 // Keep every claim true to what the product actually does.
 
 export type Level = "hot" | "warm" | "cold";
@@ -97,7 +97,7 @@ export const USE_CASES = [
 /** `link` turns that phrase of the answer into an internal link. */
 export const FAQS: { q: string; a: string; link?: { text: string; href: string } }[] = [
   { q: "What is AI lead qualification?", a: "AI reads each incoming lead, summarizes what they want and estimates how ready they are to buy, so you don’t have to triage by hand." },
-  { q: "How does scoring work?", a: "Claude looks for a clear need, budget and timeline and labels the lead Hot, Warm or Cold. You can add notes, re-run the analysis or change the status anytime." },
+  { q: "How does scoring work?", a: "Claude looks for a clear need, budget and timeline, labels the lead Hot, Warm or Cold and gives it a score from 0 to 100. You can add notes, re-run the analysis or change the status anytime." },
   { q: "Do I need to change my website?", a: "No. Connect your existing form through a webhook or the API." },
   { q: "What integrations are supported?", a: "Web forms, webhooks, the REST API, Google Sheets and Telegram." },
   { q: "Does it work with non-English leads?", a: "Yes. Summaries are written in the lead’s language." },

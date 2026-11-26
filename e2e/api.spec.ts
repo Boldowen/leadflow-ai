@@ -32,7 +32,10 @@ test.describe("REST API", () => {
 
     const analyzed = await api.post(`/api/leads/${lead.id}/analyze`);
     expect(analyzed.status()).toBe(200);
-    expect((await analyzed.json()).lead).toMatchObject({ aiTemperature: "HOT", aiModel: "mock-analyzer" });
+    const analyzedLead = (await analyzed.json()).lead;
+    expect(analyzedLead).toMatchObject({ aiTemperature: "HOT", aiModel: "mock-analyzer" });
+    expect(analyzedLead.aiScore).toBeGreaterThanOrEqual(70);
+    expect(analyzedLead.aiScore).toBeLessThanOrEqual(100);
 
     expect((await api.delete(`/api/leads/${lead.id}`)).status()).toBe(204);
     expect((await api.get(`/api/leads/${lead.id}`)).status()).toBe(404);

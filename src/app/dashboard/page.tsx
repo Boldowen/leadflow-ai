@@ -82,7 +82,7 @@ export default async function DashboardPage({ searchParams }: PageProps<"/dashbo
                   </div>
                   <p className="truncate text-sm text-slate-600">{lead.aiSummary ?? lead.email}</p>
                   <StatusBadge value={lead.status} />
-                  <TemperatureBadge value={lead.aiTemperature} />
+                  <TemperatureBadge value={lead.aiTemperature} score={lead.aiScore} />
                 </Link>
               </li>
             ))}

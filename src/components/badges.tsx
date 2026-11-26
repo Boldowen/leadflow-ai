@@ -13,7 +13,7 @@ const statusStyles: Record<string, string> = {
   LOST: "bg-slate-100 text-slate-500 line-through",
 };
 
-export function TemperatureBadge({ value }: { value: string | null }) {
+export function TemperatureBadge({ value, score }: { value: string | null; score?: number | null }) {
   if (!value) return <span className="w-fit text-xs text-slate-400">Not analyzed</span>;
   return (
     <span
@@ -22,6 +22,7 @@ export function TemperatureBadge({ value }: { value: string | null }) {
     >
       <span aria-hidden>{tempIcon[value]}</span>
       {value[0] + value.slice(1).toLowerCase()}
+      {score != null && <span className="tabular-nums"> · {score}</span>}
     </span>
   );
 }

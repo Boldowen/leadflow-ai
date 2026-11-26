@@ -4,7 +4,7 @@
  * 2. Deploy → New deployment → Web app. Execute as: Me. Who has access: Anyone.
  * 3. Copy the web app URL (https://script.google.com/macros/s/…/exec) into Emberza → Automation.
  */
-const HEADERS = ["createdAt", "name", "email", "company", "temperature", "summary", "nextAction", "message"];
+const HEADERS = ["createdAt", "name", "email", "company", "temperature", "summary", "nextAction", "message", "score"];
 
 function doPost(e) {
   const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];

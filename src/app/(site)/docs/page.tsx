@@ -39,7 +39,7 @@ const curl = `curl -X POST https://emberza.dev/api/forms/YOUR_FORM_KEY \\
 
 # → 202 {"ok":true,"leadId":"..."}`;
 
-const appsScript = `const HEADERS = ["createdAt", "name", "email", "company", "temperature", "summary", "nextAction", "message"];
+const appsScript = `const HEADERS = ["createdAt", "name", "email", "company", "temperature", "summary", "nextAction", "message", "score"];
 
 function doPost(e) {
   const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];
@@ -57,7 +57,7 @@ const endpoints = [
   ["GET", "/api/leads/:id", "Read one lead."],
   ["PATCH", "/api/leads/:id", "Update only the fields you send."],
   ["DELETE", "/api/leads/:id", "Delete a lead."],
-  ["POST", "/api/leads/:id/analyze", "Run AI lead scoring: summary, Hot/Warm/Cold and next action."],
+  ["POST", "/api/leads/:id/analyze", "Run AI lead scoring: summary, Hot/Warm/Cold, a 0–100 score (aiScore) and next action."],
   ["POST", "/api/forms/:formKey", "Public endpoint for website forms (JSON or HTML form post)."],
   ["GET", "/api/health", "Service and database status."],
 ];
@@ -127,12 +127,13 @@ export default function DocsPage() {
 
           <h2 id="ai-lead-qualification">AI lead qualification</h2>
           <p>
-            Emberza sends the lead&apos;s name, company, message and internal notes to Claude, Anthropic&apos;s AI model, and stores three
+            Emberza sends the lead&apos;s name, company, message and internal notes to Claude, Anthropic&apos;s AI model, and stores four
             results on the lead:
           </p>
           <ul>
             <li><strong>Summary</strong> — one or two sentences on who the lead is and what they want.</li>
             <li><strong>Temperature</strong> — Hot (clear need plus budget or timeline), Warm (interested but vague) or Cold (no real intent).</li>
+            <li><strong>Score</strong> — 0 to 100, always inside its temperature&apos;s band: Hot 70–100, Warm 40–69, Cold 0–39. Use it to order leads of the same temperature.</li>
             <li><strong>Next action</strong> — one concrete step for the salesperson.</li>
           </ul>
           <p>
@@ -149,7 +150,11 @@ export default function DocsPage() {
             <li>Copy the <code>https://script.google.com/macros/…/exec</code> URL into <strong>Automation → Google Sheets web app URL</strong>.</li>
           </ol>
           <pre><code>{appsScript}</code></pre>
-          <p>Each new website lead adds a row with the date, contact details, AI temperature, summary, next action and message.</p>
+          <p>
+            Each new website lead adds a row with the date, contact details, AI temperature, summary, next action, message and score. If you
+            set up the script before the score existed, add <code>&quot;score&quot;</code> to the end of <code>HEADERS</code> and a
+            matching column header in the sheet.
+          </p>
 
           <h2 id="telegram">Telegram alerts</h2>
           <ol>
@@ -157,7 +162,7 @@ export default function DocsPage() {
             <li>Send any message to your new bot, then get your chat ID from <a href="https://t.me/userinfobot" rel="noopener">@userinfobot</a>, or use a group or channel ID.</li>
             <li>Paste both on the Automation page, save, and click <strong>Send Telegram test</strong>.</li>
           </ol>
-          <p>Alerts include the temperature, contact details, the AI summary, the next action and a link to the lead.</p>
+          <p>Alerts include the temperature and score, contact details, the AI summary, the next action and a link to the lead.</p>
 
           <h2 id="run-log">Automation run log</h2>
           <p>
