@@ -34,6 +34,10 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   output: "standalone",
   poweredByHeader: false,
+  // Marketing copy and the design prototype link to /signup; the route is /register.
+  async redirects() {
+    return [{ source: "/signup", destination: "/register", permanent: true }];
+  },
   turbopack: {
     rules: {
       "*.css": {
