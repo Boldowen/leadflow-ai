@@ -10,7 +10,7 @@ export default function NewLeadPage() {
   return (
     <div className="mx-auto max-w-2xl space-y-6">
       <div>
-        <Link href="/dashboard" className="text-sm text-slate-500 hover:underline">← All leads</Link>
+        <Link href="/dashboard" className="text-sm text-zinc-400 hover:underline">← All leads</Link>
         <h1 className="mt-2 text-2xl font-semibold tracking-tight">New lead</h1>
       </div>
       <Card className="p-6">

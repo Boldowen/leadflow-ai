@@ -20,7 +20,7 @@ export default async function LoginPage({ searchParams }: PageProps<"/login">) {
   return (
     <>
       <h1 className="mb-1 text-xl font-semibold">Welcome back</h1>
-      <p className="mb-6 text-sm text-slate-600">Log in to see your leads.</p>
+      <p className="mb-6 text-sm text-zinc-400">Log in to see your leads.</p>
       <AuthForm mode="login" next={next} notice={notice} />
     </>
   );

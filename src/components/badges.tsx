@@ -1,20 +1,20 @@
 const tempStyles: Record<string, string> = {
-  HOT: "bg-red-50 text-red-700 ring-red-600/20",
-  WARM: "bg-amber-50 text-amber-700 ring-amber-600/20",
-  COLD: "bg-sky-50 text-sky-700 ring-sky-600/20",
+  HOT: "bg-red-500/10 text-red-300 ring-red-400/30",
+  WARM: "bg-amber-500/10 text-amber-300 ring-amber-400/30",
+  COLD: "bg-sky-500/10 text-sky-300 ring-sky-400/30",
 };
 const tempIcon: Record<string, string> = { HOT: "🔥", WARM: "☀️", COLD: "❄️" };
 
 const statusStyles: Record<string, string> = {
-  NEW: "bg-slate-100 text-slate-700",
-  CONTACTED: "bg-indigo-50 text-indigo-700",
-  QUALIFIED: "bg-violet-50 text-violet-700",
-  WON: "bg-emerald-50 text-emerald-700",
-  LOST: "bg-slate-100 text-slate-500 line-through",
+  NEW: "bg-white/[.06] text-zinc-300",
+  CONTACTED: "bg-indigo-500/15 text-indigo-300",
+  QUALIFIED: "bg-violet-500/15 text-violet-300",
+  WON: "bg-emerald-500/10 text-emerald-300",
+  LOST: "bg-white/[.06] text-zinc-400 line-through",
 };
 
 export function TemperatureBadge({ value, score }: { value: string | null; score?: number | null }) {
-  if (!value) return <span className="w-fit text-xs text-slate-400">Not analyzed</span>;
+  if (!value) return <span className="w-fit text-xs text-zinc-400">Not analyzed</span>;
   return (
     <span
       data-testid="temperature-badge"

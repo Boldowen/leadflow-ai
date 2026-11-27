@@ -16,8 +16,8 @@ export const metadata: Metadata = { title: "Automation" };
 const flow = ["Website form", "Validation + spam check", "Lead saved", "AI qualification", "Google Sheets", "Telegram alert"];
 
 const stepLabel = { ai: "AI", sheets: "Sheets", telegram: "Telegram" } as const;
-const stepStyle = { ok: "bg-emerald-50 text-emerald-700", skipped: "bg-slate-100 text-slate-500", failed: "bg-red-50 text-red-700" } as const;
-const runStyle = { SUCCESS: "text-emerald-700", PARTIAL: "text-amber-700", FAILED: "text-red-700" } as const;
+const stepStyle = { ok: "bg-emerald-500/10 text-emerald-300", skipped: "bg-white/[.06] text-zinc-400", failed: "bg-red-500/10 text-red-300" } as const;
+const runStyle = { SUCCESS: "text-emerald-300", PARTIAL: "text-amber-300", FAILED: "text-red-300" } as const;
 
 export default async function AutomationPage() {
   const user = await requireUser();
@@ -50,14 +50,14 @@ export default async function AutomationPage() {
     <div className="space-y-8">
       <div>
         <h1 className="text-2xl font-semibold tracking-tight">Automation</h1>
-        <p className="text-sm text-slate-600">Every website form submission is saved, qualified by AI, logged to Google Sheets and pushed to Telegram — automatically.</p>
+        <p className="text-sm text-zinc-400">Every website form submission is saved, qualified by AI, logged to Google Sheets and pushed to Telegram — automatically.</p>
       </div>
 
       <ol aria-label="Workflow" className="flex flex-wrap items-center gap-2 text-sm">
         {flow.map((step, i) => (
           <li key={step} className="flex items-center gap-2">
-            <span className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 shadow-sm">{step}</span>
-            {i < flow.length - 1 && <span aria-hidden className="text-slate-300">→</span>}
+            <span className="rounded-lg border border-white/[.08] bg-white/[.03] px-3 py-1.5 shadow-sm">{step}</span>
+            {i < flow.length - 1 && <span aria-hidden className="text-zinc-600">→</span>}
           </li>
         ))}
       </ol>
@@ -66,10 +66,10 @@ export default async function AutomationPage() {
         <Card className="space-y-4 p-6">
           <div>
             <h2 className="font-semibold">1. Connect your website</h2>
-            <p className="text-sm text-slate-500">Use the hosted form, embed the HTML form, or POST JSON from any backend.</p>
+            <p className="text-sm text-zinc-400">Use the hosted form, embed the HTML form, or POST JSON from any backend.</p>
           </div>
           <CopyField label="Hosted form" value={hostedForm} />
-          <Link href={`/f/${config.formKey}`} target="_blank" className="inline-block text-sm font-medium text-indigo-600 hover:underline">
+          <Link href={`/f/${config.formKey}`} target="_blank" className="inline-block text-sm font-medium text-indigo-300 hover:underline">
             Open hosted form ↗
           </Link>
           <CopyField label="Webhook endpoint" value={endpoint} />
@@ -83,9 +83,9 @@ export default async function AutomationPage() {
         <Card className="space-y-4 p-6">
           <div>
             <h2 className="font-semibold">2. Integrations</h2>
-            <p className="text-sm text-slate-500">
+            <p className="text-sm text-zinc-400">
               Optional. Steps that aren&apos;t configured are skipped.{" "}
-              <a href="https://github.com/Boldowen/leadflow-ai/blob/main/docs/AUTOMATION.md" target="_blank" className="text-indigo-600 hover:underline">
+              <a href="https://github.com/Boldowen/leadflow-ai/blob/main/docs/AUTOMATION.md" target="_blank" className="text-indigo-300 hover:underline">
                 Setup guide ↗
               </a>
             </p>
@@ -95,13 +95,13 @@ export default async function AutomationPage() {
       </div>
 
       <Card>
-        <div className="border-b border-slate-200 p-4">
+        <div className="border-b border-white/[.08] p-4">
           <h2 className="font-semibold">Recent runs</h2>
         </div>
         {runs.length === 0 ? (
-          <p className="px-4 py-10 text-center text-sm text-slate-500">No runs yet — submit the hosted form to see the workflow in action.</p>
+          <p className="px-4 py-10 text-center text-sm text-zinc-400">No runs yet — submit the hosted form to see the workflow in action.</p>
         ) : (
-          <ul aria-label="Automation runs" className="divide-y divide-slate-100">
+          <ul aria-label="Automation runs" className="divide-y divide-white/[.06]">
             {runs.map((run) => {
               const steps = run.steps as unknown as StepResult[];
               return (
@@ -117,7 +117,7 @@ export default async function AutomationPage() {
                       </span>
                     ))}
                   </span>
-                  <time className="text-xs text-slate-400">{run.createdAt.toLocaleString("en-US", { dateStyle: "short", timeStyle: "short" })}</time>
+                  <time className="text-xs text-zinc-400">{run.createdAt.toLocaleString("en-US", { dateStyle: "short", timeStyle: "short" })}</time>
                 </li>
               );
             })}

@@ -15,13 +15,13 @@ export function AuthForm({ mode, next, notice }: { mode: "login" | "register"; n
   return (
     <form action={action} className="space-y-4" noValidate>
       {notice && !e.form && (
-        <p role="status" className="rounded-lg bg-indigo-50 px-3 py-2 text-sm text-indigo-800">
+        <p role="status" className="rounded-lg bg-indigo-500/15 px-3 py-2 text-sm text-indigo-200">
           {notice}
         </p>
       )}
       {isLogin && next && <input type="hidden" name="next" value={next} />}
       {e.form && (
-        <p role="alert" className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">
+        <p role="alert" className="rounded-lg bg-red-500/10 px-3 py-2 text-sm text-red-300">
           {e.form}
         </p>
       )}
@@ -45,7 +45,7 @@ export function AuthForm({ mode, next, notice }: { mode: "login" | "register"; n
       </Field>
       {isLogin && (
         <p className="-mt-2 text-right text-sm">
-          <Link href="/forgot-password" className="font-medium text-indigo-600 hover:underline">
+          <Link href="/forgot-password" className="font-medium text-indigo-300 hover:underline">
             Forgot password?
           </Link>
         </p>
@@ -53,9 +53,9 @@ export function AuthForm({ mode, next, notice }: { mode: "login" | "register"; n
       <SubmitButton className="w-full" pendingText={isLogin ? "Logging in…" : "Creating account…"}>
         {isLogin ? "Log in" : "Create account"}
       </SubmitButton>
-      <p className="text-center text-sm text-slate-600">
+      <p className="text-center text-sm text-zinc-400">
         {isLogin ? "No account yet? " : "Already have an account? "}
-        <Link href={isLogin ? "/register" : "/login"} className="font-medium text-indigo-600 hover:underline">
+        <Link href={isLogin ? "/register" : "/login"} className="font-medium text-indigo-300 hover:underline">
           {isLogin ? "Sign up" : "Log in"}
         </Link>
       </p>

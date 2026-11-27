@@ -1,21 +1,37 @@
 @import "tailwindcss";
 
+/* Emberza design system (from the landing page design): near-black background with a dot grid,
+   Inter for text, Space Grotesk for headings, indigo/violet accents. */
 @theme inline {
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-space), var(--font-inter), ui-sans-serif, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
 
 :root {
-  color-scheme: light;
+  color-scheme: dark;
 }
 
 body {
-  @apply bg-slate-50 text-slate-900 antialiased;
+  @apply bg-[#0a0a0f] text-zinc-200 antialiased;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+@layer base {
+  h1, h2 { font-family: var(--font-display); letter-spacing: -0.02em; }
+  :focus-visible { outline: 2px solid #a5b4fc; outline-offset: 2px; }
+  ::selection { background: rgba(129, 140, 248, 0.35); }
 }
 
 /* Shared form control look (in the components layer so utilities like sm:w-44 can override it) */
 @layer components {
-.input {
-  @apply block w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm shadow-sm outline-none transition placeholder:text-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 aria-[invalid=true]:border-red-400;
-}
+  .input {
+    @apply block w-full rounded-xl border border-white/[.12] bg-white/[.04] px-3 py-2 text-sm text-zinc-100 outline-none transition placeholder:text-zinc-500 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/25 aria-[invalid=true]:border-red-400;
+  }
+  /* Native <select> menus follow color-scheme: dark; keep option text readable everywhere. */
+  .input option { background: #111118; color: #e4e4e7; }
+  .glass {
+    @apply rounded-2xl border border-white/[.08] bg-white/[.03] backdrop-blur-sm;
+  }
 }

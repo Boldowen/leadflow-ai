@@ -21,12 +21,12 @@ export default async function LeadPage({ params }: PageProps<"/dashboard/leads/[
   return (
     <div className="space-y-6">
       <div>
-        <Link href="/dashboard" className="text-sm text-slate-500 hover:underline">← All leads</Link>
+        <Link href="/dashboard" className="text-sm text-zinc-400 hover:underline">← All leads</Link>
         <div className="mt-2 flex flex-wrap items-center gap-3">
           <h1 className="text-2xl font-semibold tracking-tight">{lead.name}</h1>
           <StatusBadge value={lead.status} />
         </div>
-        <p className="text-sm text-slate-500">
+        <p className="text-sm text-zinc-400">
           {lead.email}
           {lead.company ? ` · ${lead.company}` : ""} · added {lead.createdAt.toLocaleDateString("en-US", { dateStyle: "medium" })} via {lead.source}
         </p>
@@ -40,7 +40,7 @@ export default async function LeadPage({ params }: PageProps<"/dashboard/leads/[
           <AiPanel analyze={analyzeLeadAction.bind(null, lead.id)} lead={lead} />
           <Card className="p-5">
             <h2 className="font-semibold">Danger zone</h2>
-            <p className="mt-1 mb-4 text-sm text-slate-500">Deleting a lead removes it and its AI analysis.</p>
+            <p className="mt-1 mb-4 text-sm text-zinc-400">Deleting a lead removes it and its AI analysis.</p>
             <DeleteLeadButton action={deleteLeadAction.bind(null, lead.id)} />
           </Card>
         </div>

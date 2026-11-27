@@ -9,8 +9,8 @@ type FormAction = (prev: AdminState, formData: FormData) => Promise<AdminState>;
 type ButtonAction = () => Promise<AdminState>;
 
 function Feedback({ state }: { state: AdminState }) {
-  if (state?.ok) return <p role="status" className="rounded-lg bg-emerald-50 px-3 py-2 text-sm text-emerald-700">{state.ok}</p>;
-  if (state?.error) return <p role="alert" className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">{state.error}</p>;
+  if (state?.ok) return <p role="status" className="rounded-lg bg-emerald-500/10 px-3 py-2 text-sm text-emerald-300">{state.ok}</p>;
+  if (state?.error) return <p role="alert" className="rounded-lg bg-red-500/10 px-3 py-2 text-sm text-red-300">{state.error}</p>;
   return null;
 }
 
@@ -42,7 +42,7 @@ export function PasswordCard({ setPassword, sendLink, revoke }: { setPassword: F
     <Card className="space-y-4 p-6">
       <div>
         <h2 className="font-semibold">Password &amp; sessions</h2>
-        <p className="text-sm text-slate-500">Changing the password signs the user out on every device.</p>
+        <p className="text-sm text-zinc-400">Changing the password signs the user out on every device.</p>
       </div>
       <form action={run} className="space-y-3" noValidate>
         <Feedback state={state} />
@@ -51,7 +51,7 @@ export function PasswordCard({ setPassword, sendLink, revoke }: { setPassword: F
         </Field>
         <SubmitButton pendingText="Saving…">Set password</SubmitButton>
       </form>
-      <div className="space-y-3 border-t border-slate-100 pt-4">
+      <div className="space-y-3 border-t border-white/[.06] pt-4">
         <Feedback state={linkState} />
         <Feedback state={revokeState} />
         <div className="flex flex-wrap gap-3">
@@ -72,12 +72,12 @@ export function RoleCard({ isAdmin, isSelf, action }: { isAdmin: boolean; isSelf
   return (
     <Card className="space-y-3 p-6">
       <h2 className="font-semibold">Role</h2>
-      <p className="text-sm text-slate-600">
+      <p className="text-sm text-zinc-400">
         {isAdmin ? "Admins can see usage across all accounts and manage users." : "Regular user. Sees only their own leads."}
       </p>
       <Feedback state={state} />
       {isSelf ? (
-        <p className="text-sm text-slate-500">You can&apos;t change your own role.</p>
+        <p className="text-sm text-zinc-400">You can&apos;t change your own role.</p>
       ) : (
         <form
           action={run}
@@ -97,11 +97,11 @@ export function RoleCard({ isAdmin, isSelf, action }: { isAdmin: boolean; isSelf
 export function DeleteUserCard({ action, email, isSelf }: { action: FormAction; email: string; isSelf: boolean }) {
   const [state, run] = useActionState(action, undefined);
   return (
-    <Card className="space-y-3 border-red-200 p-6">
-      <h2 className="font-semibold text-red-700">Delete account</h2>
-      <p className="text-sm text-slate-600">Deletes the account with all its leads, automation runs and settings. This can&apos;t be undone.</p>
+    <Card className="space-y-3 border-red-500/30 p-6">
+      <h2 className="font-semibold text-red-300">Delete account</h2>
+      <p className="text-sm text-zinc-400">Deletes the account with all its leads, automation runs and settings. This can&apos;t be undone.</p>
       {isSelf ? (
-        <p className="text-sm text-slate-500">You can&apos;t delete your own account here.</p>
+        <p className="text-sm text-zinc-400">You can&apos;t delete your own account here.</p>
       ) : (
         <form action={run} className="space-y-3" noValidate>
           <Feedback state={state} />

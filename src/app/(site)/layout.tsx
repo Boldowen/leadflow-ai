@@ -1,13 +1,13 @@
-import { SiteFooter } from "@/components/site/site-footer";
-import { SiteHeader } from "@/components/site/site-header";
+import { Footer } from "@/components/landing/footer";
+import { Navbar } from "@/components/landing/navbar";
 
-// Docs and privacy: static, server-rendered, shared light header and footer. The landing page (app/page.tsx) has its own.
+// Docs and privacy: static, server-rendered, with the same navbar and footer as the landing page.
 export default function SiteLayout({ children }: LayoutProps<"/">) {
   return (
     <div className="flex flex-1 flex-col">
-      <SiteHeader />
+      <Navbar />
       <main className="flex-1">{children}</main>
-      <SiteFooter />
+      <Footer />
     </div>
   );
 }

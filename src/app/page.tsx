@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Faq } from "@/components/landing/faq";
 import { Features } from "@/components/landing/features";
 import { FinalCta } from "@/components/landing/final-cta";
-import { inter, spaceGrotesk } from "@/components/landing/fonts";
 import { Footer } from "@/components/landing/footer";
 import { Hero } from "@/components/landing/hero";
 import { HowItWorks } from "@/components/landing/how-it-works";
@@ -15,7 +14,6 @@ import { UseCases } from "@/components/landing/use-cases";
 import { JsonLd } from "@/components/site/json-ld";
 import { FAQS, FEATURES } from "@/lib/landing-data";
 import { absoluteUrl, organizationId, organizationJsonLd, SITE, websiteJsonLd } from "@/lib/seo";
-import "@/components/landing/landing.css";
 
 export const metadata: Metadata = {
   title: { absolute: SITE.title },
@@ -47,7 +45,7 @@ const jsonLd = [
 // Server component: composes the landing sections; interactive pieces are client components.
 export default function Home() {
   return (
-    <div className={`lp-root ${inter.variable} ${spaceGrotesk.variable} flex min-h-screen flex-1 flex-col`}>
+    <div className="lp-root flex min-h-screen flex-1 flex-col">
       <JsonLd graph={jsonLd} />
       {/* Without JavaScript, scroll-reveal content must not stay invisible. */}
       <noscript>

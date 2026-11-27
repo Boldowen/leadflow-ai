@@ -66,18 +66,18 @@ export default function DocsPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-14 sm:px-6">
       <JsonLd graph={[breadcrumbJsonLd([{ name: "Home", path: "/" }, { name: "Docs", path: "/docs" }])]} />
-      <nav aria-label="Breadcrumb" className="mb-6 text-sm text-slate-500">
+      <nav aria-label="Breadcrumb" className="mb-6 text-sm text-zinc-400">
         <Link href="/" className="hover:underline">Home</Link> <span aria-hidden>/</span> <span aria-current="page">Docs</span>
       </nav>
       <PageIntro eyebrow="Documentation" title="Connect your website and automate lead qualification">
         Everything you need to send inbound leads to Emberza, get them scored by AI and pass them on to Google Sheets and Telegram.
       </PageIntro>
 
-      <nav aria-label="On this page" className="mt-8 rounded-xl border border-slate-200 bg-white p-5">
+      <nav aria-label="On this page" className="mt-8 rounded-xl border border-white/[.08] bg-white/[.03] p-5">
         <h2 className="text-sm font-semibold">On this page</h2>
         <ol className="mt-3 grid gap-x-6 gap-y-1.5 text-sm sm:grid-cols-2">
           {toc.map(([id, label]) => (
-            <li key={id}><a href={`#${id}`} className="text-indigo-600 hover:underline">{label}</a></li>
+            <li key={id}><a href={`#${id}`} className="text-indigo-300 hover:underline">{label}</a></li>
           ))}
         </ol>
       </nav>
