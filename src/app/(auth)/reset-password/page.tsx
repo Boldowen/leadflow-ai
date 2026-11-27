@@ -13,7 +13,7 @@ export default async function ResetPasswordPage({ searchParams }: PageProps<"/re
     return (
       <>
         <h1 className="mb-1 text-xl font-semibold">Link expired</h1>
-        <p className="mb-6 text-sm text-slate-600">This reset link is invalid, already used, or older than 30 minutes.</p>
+        <p className="mb-6 text-sm text-zinc-400">This reset link is invalid, already used, or older than 30 minutes.</p>
         <ButtonLink href="/forgot-password" className="w-full">Request a new link</ButtonLink>
       </>
     );
@@ -21,7 +21,7 @@ export default async function ResetPasswordPage({ searchParams }: PageProps<"/re
   return (
     <>
       <h1 className="mb-1 text-xl font-semibold">Choose a new password</h1>
-      <p className="mb-6 text-sm text-slate-600">You&apos;ll be signed out on every device and can log in with the new password.</p>
+      <p className="mb-6 text-sm text-zinc-400">You&apos;ll be signed out on every device and can log in with the new password.</p>
       <ResetPasswordForm token={token as string} />
     </>
   );

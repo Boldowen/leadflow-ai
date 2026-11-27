@@ -10,7 +10,7 @@ export function ResetPasswordForm({ token }: { token: string }) {
   const e = state?.errors ?? {};
   return (
     <form action={action} className="space-y-4" noValidate>
-      {e.form && <p role="alert" className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">{e.form}</p>}
+      {e.form && <p role="alert" className="rounded-lg bg-red-500/10 px-3 py-2 text-sm text-red-300">{e.form}</p>}
       <input type="hidden" name="token" value={token} />
       <Field label="New password" name="password" error={e.password} hint="At least 8 characters">
         <input id="password" name="password" type="password" className="input" autoComplete="new-password" aria-invalid={!!e.password} />

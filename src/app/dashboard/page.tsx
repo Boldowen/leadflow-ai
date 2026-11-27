@@ -19,9 +19,9 @@ export default async function DashboardPage({ searchParams }: PageProps<"/dashbo
 
   const cards = [
     { label: "Total leads", value: stats.total },
-    { label: "Hot", value: stats.hot, accent: "text-red-600" },
-    { label: "Warm", value: stats.warm, accent: "text-amber-600" },
-    { label: "Won", value: stats.won, accent: "text-emerald-600" },
+    { label: "Hot", value: stats.hot, accent: "text-red-400" },
+    { label: "Warm", value: stats.warm, accent: "text-amber-300" },
+    { label: "Won", value: stats.won, accent: "text-emerald-300" },
   ];
 
   return (
@@ -29,7 +29,7 @@ export default async function DashboardPage({ searchParams }: PageProps<"/dashbo
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight">Leads</h1>
-          <p className="text-sm text-slate-600">Hi {user.name.split(" ")[0]} — here is your pipeline.</p>
+          <p className="text-sm text-zinc-400">Hi {user.name.split(" ")[0]} — here is your pipeline.</p>
         </div>
         <ButtonLink href="/dashboard/leads/new">+ New lead</ButtonLink>
       </div>
@@ -37,7 +37,7 @@ export default async function DashboardPage({ searchParams }: PageProps<"/dashbo
       <section aria-label="Stats" className="grid grid-cols-2 gap-4 md:grid-cols-4">
         {cards.map((c) => (
           <Card key={c.label} className="p-4">
-            <p className="text-xs font-medium tracking-wide text-slate-500 uppercase">{c.label}</p>
+            <p className="text-xs font-medium tracking-wide text-zinc-400 uppercase">{c.label}</p>
             <p className={`mt-1 text-2xl font-semibold tabular-nums ${c.accent ?? ""}`} data-testid={`stat-${c.label.toLowerCase().replace(" ", "-")}`}>
               {c.value}
             </p>
@@ -46,7 +46,7 @@ export default async function DashboardPage({ searchParams }: PageProps<"/dashbo
       </section>
 
       <Card>
-        <form className="flex flex-col gap-3 border-b border-slate-200 p-4 sm:flex-row" role="search">
+        <form className="flex flex-col gap-3 border-b border-white/[.08] p-4 sm:flex-row" role="search">
           <input name="q" defaultValue={q} placeholder="Search name, email, company…" aria-label="Search leads" className="input sm:max-w-xs" />
           <select name="status" defaultValue={status} aria-label="Filter by status" className="input sm:w-44">
             <option value="">All statuses</option>
@@ -56,9 +56,9 @@ export default async function DashboardPage({ searchParams }: PageProps<"/dashbo
               </option>
             ))}
           </select>
-          <button className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700">Filter</button>
+          <button className="rounded-xl bg-[linear-gradient(135deg,#4f46e5,#7c3aed)] px-4 py-2 text-sm font-medium text-white">Filter</button>
           {filtered && (
-            <Link href="/dashboard" className="self-center text-sm text-slate-500 hover:underline">
+            <Link href="/dashboard" className="self-center text-sm text-zinc-400 hover:underline">
               Clear
             </Link>
           )}
@@ -68,19 +68,19 @@ export default async function DashboardPage({ searchParams }: PageProps<"/dashbo
           <div className="px-6 py-16 text-center">
             <p className="font-medium">{filtered ? "No leads match your filters." : "No leads yet."}</p>
             {!filtered && (
-              <p className="mt-1 text-sm text-slate-500">Add your first lead and let AI qualify it.</p>
+              <p className="mt-1 text-sm text-zinc-400">Add your first lead and let AI qualify it.</p>
             )}
           </div>
         ) : (
-          <ul className="divide-y divide-slate-100" aria-label="Lead list">
+          <ul className="divide-y divide-white/[.06]" aria-label="Lead list">
             {leads.map((lead) => (
               <li key={lead.id}>
-                <Link href={`/dashboard/leads/${lead.id}`} className="grid gap-1 px-4 py-3 hover:bg-slate-50 sm:grid-cols-[1.5fr_1.5fr_auto_auto] sm:items-center sm:gap-4">
+                <Link href={`/dashboard/leads/${lead.id}`} className="grid gap-1 px-4 py-3 hover:bg-white/[.04] sm:grid-cols-[1.5fr_1.5fr_auto_auto] sm:items-center sm:gap-4">
                   <div className="min-w-0">
                     <p className="truncate font-medium">{lead.name}</p>
-                    <p className="truncate text-sm text-slate-500">{lead.company ?? "—"}</p>
+                    <p className="truncate text-sm text-zinc-400">{lead.company ?? "—"}</p>
                   </div>
-                  <p className="truncate text-sm text-slate-600">{lead.aiSummary ?? lead.email}</p>
+                  <p className="truncate text-sm text-zinc-400">{lead.aiSummary ?? lead.email}</p>
                   <StatusBadge value={lead.status} />
                   <TemperatureBadge value={lead.aiTemperature} score={lead.aiScore} />
                 </Link>

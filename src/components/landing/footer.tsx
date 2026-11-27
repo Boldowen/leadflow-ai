@@ -1,13 +1,13 @@
 import Link from "next/link";
 import { FOOTER } from "@/lib/landing-data";
-import { Brand } from "./brand";
+import { Logo } from "@/components/logo";
 
 export function Footer() {
   return (
     <footer className="border-t border-white/[.08]">
       <div className="mx-auto grid max-w-[1200px] gap-8 px-6 py-12 text-sm [grid-template-columns:repeat(auto-fit,minmax(180px,1fr))]">
         <div className="flex flex-col gap-2.5">
-          <Brand size={24} />
+          <Logo size={24} />
           <span className="text-[#a1a1aa]">{FOOTER.tagline}</span>
           <a href={`mailto:${FOOTER.email}`} className="text-[#c7d2fe] hover:text-white">{FOOTER.email}</a>
         </div>

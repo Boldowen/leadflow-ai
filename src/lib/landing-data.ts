@@ -10,10 +10,10 @@ export const LEVELS: Record<Level, { name: string; color: string; text: string }
 };
 
 export const NAV_LINKS = [
-  { href: "#features", label: "Features" },
-  { href: "#how", label: "How it works" },
-  { href: "#demo", label: "Live demo" },
-  { href: "#faq", label: "FAQ" },
+  { href: "/#features", label: "Features" },
+  { href: "/#how", label: "How it works" },
+  { href: "/#demo", label: "Live demo" },
+  { href: "/#faq", label: "FAQ" },
   { href: "/docs", label: "Docs" },
 ];
 
@@ -112,7 +112,7 @@ export const FOOTER = {
   email: "hello@emberza.dev",
   github: "https://github.com/Boldowen/leadflow-ai",
   groups: [
-    { title: "Product", links: [{ href: "#features", label: "Features" }, { href: "#how", label: "How it works" }, { href: "#faq", label: "FAQ" }] },
+    { title: "Product", links: [{ href: "/#features", label: "Features" }, { href: "/#how", label: "How it works" }, { href: "/#faq", label: "FAQ" }] },
     {
       title: "Resources",
       links: [{ href: "/docs", label: "Documentation" }, { href: "/docs#rest-api", label: "REST API" }, { href: "/privacy", label: "Privacy policy" }],

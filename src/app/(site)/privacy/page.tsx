@@ -17,7 +17,7 @@ export default function PrivacyPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-14 sm:px-6">
       <JsonLd graph={[breadcrumbJsonLd([{ name: "Home", path: "/" }, { name: "Privacy policy", path: "/privacy" }])]} />
-      <nav aria-label="Breadcrumb" className="mb-6 text-sm text-slate-500">
+      <nav aria-label="Breadcrumb" className="mb-6 text-sm text-zinc-400">
         <Link href="/" className="hover:underline">Home</Link> <span aria-hidden>/</span> <span aria-current="page">Privacy policy</span>
       </nav>
       <PageIntro eyebrow="Legal" title="Privacy policy">

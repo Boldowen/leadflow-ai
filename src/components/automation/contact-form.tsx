@@ -29,16 +29,16 @@ export function ContactForm({ formKey, initiallySent = false }: { formKey: strin
 
   if (status === "sent") {
     return (
-      <div role="status" className="rounded-xl bg-emerald-50 p-6 text-center">
-        <p className="text-lg font-semibold text-emerald-800">Thanks — message received!</p>
-        <p className="mt-1 text-sm text-emerald-700">We&apos;ll get back to you shortly.</p>
+      <div role="status" className="rounded-xl bg-emerald-500/10 p-6 text-center">
+        <p className="text-lg font-semibold text-emerald-200">Thanks — message received!</p>
+        <p className="mt-1 text-sm text-emerald-300">We&apos;ll get back to you shortly.</p>
       </div>
     );
   }
 
   return (
     <form onSubmit={onSubmit} className="space-y-4" noValidate>
-      {errors.form && <p role="alert" className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">{errors.form}</p>}
+      {errors.form && <p role="alert" className="rounded-lg bg-red-500/10 px-3 py-2 text-sm text-red-300">{errors.form}</p>}
       <div className="grid gap-4 sm:grid-cols-2">
         <Field label="Your name" name="name" error={errors.name}>
           <input id="name" name="name" className="input" autoComplete="name" aria-invalid={!!errors.name} />

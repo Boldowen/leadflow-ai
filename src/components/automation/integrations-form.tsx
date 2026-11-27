@@ -20,7 +20,7 @@ export function IntegrationsForm({ config }: { config: Config }) {
   return (
     <div className="space-y-4">
       <form action={action} className="space-y-4" noValidate>
-        {state?.saved && <p role="status" className="rounded-lg bg-emerald-50 px-3 py-2 text-sm text-emerald-700">Integrations saved.</p>}
+        {state?.saved && <p role="status" className="rounded-lg bg-emerald-500/10 px-3 py-2 text-sm text-emerald-300">Integrations saved.</p>}
         <Field label="Google Sheets web app URL" name="sheetsWebhookUrl" error={e.sheetsWebhookUrl} hint="Deploy the Apps Script from the docs as a web app and paste its URL.">
           <input id="sheetsWebhookUrl" name="sheetsWebhookUrl" className="input" placeholder="https://script.google.com/macros/s/…/exec" defaultValue={v.sheetsWebhookUrl} aria-invalid={!!e.sheetsWebhookUrl} />
         </Field>
@@ -35,12 +35,12 @@ export function IntegrationsForm({ config }: { config: Config }) {
         <SubmitButton pendingText="Saving…">Save integrations</SubmitButton>
       </form>
 
-      <form action={runTest} className="flex flex-wrap items-center gap-3 border-t border-slate-100 pt-4">
+      <form action={runTest} className="flex flex-wrap items-center gap-3 border-t border-white/[.06] pt-4">
         <Button type="submit" variant="secondary" disabled={testing}>
           {testing && <Spinner />} Send Telegram test
         </Button>
-        {test?.ok && <span role="status" className="text-sm text-emerald-700">Test message sent ✓</span>}
-        {test?.error && <span role="alert" className="text-sm text-red-600">{test.error}</span>}
+        {test?.ok && <span role="status" className="text-sm text-emerald-300">Test message sent ✓</span>}
+        {test?.error && <span role="alert" className="text-sm text-red-400">{test.error}</span>}
       </form>
     </div>
   );

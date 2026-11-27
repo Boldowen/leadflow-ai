@@ -35,22 +35,22 @@ export default async function AdminUserPage({ params }: PageProps<"/admin/users/
   return (
     <div className="space-y-6">
       <div>
-        <Link href="/admin" className="text-sm text-slate-500 hover:underline">← All users</Link>
+        <Link href="/admin" className="text-sm text-zinc-400 hover:underline">← All users</Link>
         <div className="mt-2 flex flex-wrap items-center gap-3">
           <h1 className="text-2xl font-semibold tracking-tight">{user.name}</h1>
-          <span className={`rounded-md px-2 py-0.5 text-xs font-medium ${isAdmin ? "bg-indigo-50 text-indigo-700" : "bg-slate-100 text-slate-700"}`}>
+          <span className={`rounded-md px-2 py-0.5 text-xs font-medium ${isAdmin ? "bg-indigo-500/15 text-indigo-300" : "bg-white/[.06] text-zinc-300"}`}>
             {isAdmin ? "Admin" : "User"}
           </span>
-          {isSelf && <span className="text-xs text-slate-500">(you)</span>}
+          {isSelf && <span className="text-xs text-zinc-400">(you)</span>}
         </div>
-        <p className="text-sm break-all text-slate-500">{user.email}</p>
+        <p className="text-sm break-all text-zinc-400">{user.email}</p>
       </div>
 
       <Card className="p-4">
         <dl className="grid grid-cols-2 gap-4 text-sm sm:grid-cols-5">
           {facts.map(([label, value]) => (
             <div key={label}>
-              <dt className="text-xs font-medium tracking-wide text-slate-500 uppercase">{label}</dt>
+              <dt className="text-xs font-medium tracking-wide text-zinc-400 uppercase">{label}</dt>
               <dd className="mt-1 font-medium">{value}</dd>
             </div>
           ))}

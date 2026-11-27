@@ -30,33 +30,33 @@ export function AiPanel({ analyze, lead }: { analyze: (state: AnalyzeState) => P
           <dl className="space-y-3 text-sm" data-testid="ai-result">
             {lead.aiScore != null && (
               <div>
-                <dt className="text-xs font-medium tracking-wide text-slate-500 uppercase">Lead score</dt>
+                <dt className="text-xs font-medium tracking-wide text-zinc-400 uppercase">Lead score</dt>
                 <dd className="mt-0.5 flex items-center gap-3">
                   <span className="text-2xl font-semibold tabular-nums" data-testid="ai-score">{lead.aiScore}</span>
-                  <span className="text-slate-500">/ 100</span>
-                  <span className="h-2 flex-1 overflow-hidden rounded-full bg-slate-100" aria-hidden>
+                  <span className="text-zinc-400">/ 100</span>
+                  <span className="h-2 flex-1 overflow-hidden rounded-full bg-white/[.06]" aria-hidden>
                     <span className="block h-full rounded-full bg-indigo-500" style={{ width: `${lead.aiScore}%` }} />
                   </span>
                 </dd>
               </div>
             )}
             <div>
-              <dt className="text-xs font-medium tracking-wide text-slate-500 uppercase">Summary</dt>
+              <dt className="text-xs font-medium tracking-wide text-zinc-400 uppercase">Summary</dt>
               <dd className="mt-0.5">{lead.aiSummary}</dd>
             </div>
             <div>
-              <dt className="text-xs font-medium tracking-wide text-slate-500 uppercase">Next action</dt>
+              <dt className="text-xs font-medium tracking-wide text-zinc-400 uppercase">Next action</dt>
               <dd className="mt-0.5">{lead.aiNextAction}</dd>
             </div>
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-zinc-400">
               {lead.aiModel} · {lead.analyzedAt?.toLocaleString("en-US", { dateStyle: "medium", timeStyle: "short" })}
             </p>
           </dl>
         ) : (
-          <p className="text-sm text-slate-500">Get a summary, a Hot / Warm / Cold rating with a 0–100 score and a suggested next step.</p>
+          <p className="text-sm text-zinc-400">Get a summary, a Hot / Warm / Cold rating with a 0–100 score and a suggested next step.</p>
         )}
 
-        {state?.error && <p role="alert" className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">{state.error}</p>}
+        {state?.error && <p role="alert" className="rounded-lg bg-red-500/10 px-3 py-2 text-sm text-red-300">{state.error}</p>}
 
         <form action={action}>
           <Button type="submit" disabled={pending} className="w-full" variant={hasResult ? "secondary" : "primary"}>

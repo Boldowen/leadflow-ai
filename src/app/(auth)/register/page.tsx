@@ -11,7 +11,7 @@ export default function RegisterPage() {
   return (
     <>
       <h1 className="mb-1 text-xl font-semibold">Create your account</h1>
-      <p className="mb-6 text-sm text-slate-600">Start qualifying leads with AI in a minute.</p>
+      <p className="mb-6 text-sm text-zinc-400">Start qualifying leads with AI in a minute.</p>
       <AuthForm mode="register" />
     </>
   );
