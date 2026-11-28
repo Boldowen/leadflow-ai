@@ -23,7 +23,7 @@ export function Footer() {
           </nav>
         ))}
       </div>
-      <p className="mx-auto max-w-[1200px] px-6 pb-8 text-[13px] text-[#a1a1aa]">© {new Date().getFullYear()} Emberza · Built with Next.js, PostgreSQL and Claude</p>
+      <p className="mx-auto max-w-[1200px] px-6 pb-8 text-[13px] text-[#a1a1aa]">© {new Date().getFullYear()} Emberza. Бүх эрх хуулиар хамгаалагдсан.</p>
     </footer>
   );
 }
